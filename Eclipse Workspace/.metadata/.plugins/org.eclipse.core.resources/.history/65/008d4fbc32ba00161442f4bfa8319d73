@@ -1,0 +1,39 @@
+package test;
+
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.opengl.*;
+
+
+      public class processingmain extends PApplet {
+
+    	  
+    	  public void setup(){
+    		 
+    	  }
+    	  
+    	  public void settings(){
+    		  
+    		  size(600,600,P3D);
+    	  }
+    	  
+    	  public void draw(){
+    		  
+    		  beginShape(QUADS);
+    		  
+    		  vertex(50, 50,55);
+    		  vertex(50, 90,95);
+    		  vertex(90, 90,95);
+    		  vertex(90, 50,55);
+
+    		  endShape();
+    		  
+    		  
+    	  }
+    	  
+    	   public static void main(String args[]) {
+    	   PApplet.main("test.processingmain");
+    	   }
+
+}

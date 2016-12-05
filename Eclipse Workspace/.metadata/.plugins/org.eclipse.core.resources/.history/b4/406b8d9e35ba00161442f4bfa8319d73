@@ -1,0 +1,36 @@
+package test;
+
+import processing.core.PApplet;
+
+public class processingmain2 extends PApplet{
+
+	PImage img;
+	@Override
+	public void settings() {
+	 size(500, 800);
+	}
+	public void setup() {
+	img = loadImage("C:\\Users\\ii\\Pictures\\stones_scaled.jpg");
+	img.resize(width, height);
+	}
+	int w_max = 255;
+	int h_max = 150;
+	int h_min = 50;
+	float c = w_max / (float) (h_max - h_min);
+	@Override
+	public void draw() {
+	image(img, 0, 0);
+	loadPixels();
+	for (int i = 0; i < pixels.length; i++) {
+	pixels[i] = color((brightness(pixels[i]) - h_min) * c);
+	}
+	updatePixels();
+	}
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		PApplet.main("test.processingmain2");
+	}
+
+}

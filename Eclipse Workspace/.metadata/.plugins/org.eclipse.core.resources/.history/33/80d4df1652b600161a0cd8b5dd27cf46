@@ -1,0 +1,66 @@
+package Game;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class haupt extends PApplet{
+// Initialisierung //////////////
+	PImage test;
+	public PImage[] pimg = new PImage[6];
+	public ImageLoader imgloader = new ImageLoader();
+	CharMovment charmov = new CharMovment();
+	public int wert = 0;
+	int bewegungseitlich = 0;
+	int bewegunghorizontal = 0;
+	int testvar =0;
+///////////////////////////
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		PApplet.main("Game.haupt");
+	}
+
+	
+	public void setup(){
+		frameRate(20);
+		
+		
+	}
+	
+	public void settings(){
+		size(800,600);
+		System.out.println(sketchPath());
+		imgloader.LoadImageCharMov(pimg);
+		
+	}
+	
+
+	public void draw(){
+		 background(255,255,255);		
+		 System.out.println(wert);
+		 image(pimg[wert] ,bewegungseitlich, bewegunghorizontal);
+
+		
+	}
+	
+	public void keyPressed(){
+		
+		//test platzhalter = new test(this);
+		
+		if((key == 'd' || key == 'D')){
+			System.out.println("w");
+				bewegungseitlich = charmov.charbewegungrechts(bewegungseitlich);
+	
+		}
+		if((key == 'a' || key == 'A')){
+				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);		
+		}
+		if((key == 'w' || key == 'W')){
+			
+			bewegunghorizontal = charmov.charbewegunghoch(bewegunghorizontal);
+		}
+		if((key == 's' || key == 'S')){
+			bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal);
+		}
+	}
+
+}

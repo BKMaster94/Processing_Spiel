@@ -1,0 +1,62 @@
+package test;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class processingmain2 extends PApplet{
+
+	PImage img;
+	@Override
+	public void settings() {
+	 size(500, 800);
+	}
+	public void setup() {
+	img = loadImage("");
+	img.resize(width, height);
+	}
+	int w_max = 255;
+	int h_max = 150;
+	int h_min = 50;
+	
+	int red =0;
+	int green =0;
+	int blue =0;
+	
+	public void draw() {
+	image(img, 0, 0);
+	loadPixels();
+	
+	for(int j=0;j < pixels.length;j++){
+		red = (int) red(pixels[j]);
+		green = (int) green(pixels[j]);
+		blue = (int) blue(pixels[j]);
+		
+		int brnes = (red + green + blue) /3;
+		if(brnes > h_max){
+			h_max = brnes;
+			System.out.println("max: " +h_max);
+		}
+		if(brnes < h_min){
+			h_min = brnes;
+			System.out.println("min : " +h_min);
+		}
+		
+	}
+	float c = w_max / (float) (h_max - h_min);
+	
+	
+	
+	
+	for (int i = 0; i < pixels.length; i++) {
+	pixels[i] = color((brightness(pixels[i]) - h_min) * c);
+	}
+	updatePixels();
+	}
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		PApplet.main("test.processingmain2");
+	}
+
+}
