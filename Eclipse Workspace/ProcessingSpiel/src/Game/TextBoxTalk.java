@@ -17,7 +17,7 @@ public class TextBoxTalk{
 		haupt.fill(50);
 		font = haupt.createFont("Blackadder ITC Standard", 24 , true);
 		haupt.textFont(font,24);
-		haupt.text("was ist hier los", 15, 620, 700, 800);
+		haupt.text(text, 15, 620, 700, 800);
 		//haupt.textSize(24);
 		haupt.fill(255);
 	}

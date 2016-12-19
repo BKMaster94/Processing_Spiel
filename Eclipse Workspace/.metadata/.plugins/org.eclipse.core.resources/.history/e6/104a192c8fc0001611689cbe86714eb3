@@ -1,0 +1,21 @@
+package Game;
+
+import controlP5.*;
+import processing.core.PApplet;
+
+public class gameButtons extends PApplet{
+
+	
+	ControlP5 buttonForAll = new ControlP5(this);
+	
+	
+	
+	buttonForAll.addButton("Antwort")
+	.setValue(0)
+	.setPosition(50,700)
+	.setSize(100,50);
+	
+	
+	
+	
+}

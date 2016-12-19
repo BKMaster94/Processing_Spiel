@@ -32,6 +32,7 @@
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
 		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="C:\Users\Bruno\Desktop\Programme\processing-3.2.2\core\library"/>
 			<item value="C:\Users\Bruno\Desktop\processing-3.2.3\core\library"/>
 		</list>
 	</section>

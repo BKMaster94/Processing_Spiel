@@ -3,9 +3,11 @@ package Game;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PFont;
+import controlP5.*;	
 
 public class haupt extends PApplet{
 // Initialisierung //////////////
+	//ControlP5 cp5 = new ControlP5(this);
 	public int animationchanger=0;
 	public int rightmov = 0;
 	public int downmov= 6;
@@ -22,6 +24,7 @@ public class haupt extends PApplet{
 	public PImage[] backgroundimg = new PImage[9];
 	PImage test;
 	///////////
+	public gameButtons gbuttons = new gameButtons();
 	public hitCollisionUmgebung coll = new hitCollisionUmgebung();
 	public ImageLoader imgloader = new ImageLoader();
 	public BackagroundLoader backloader;
@@ -38,12 +41,16 @@ public class haupt extends PApplet{
 		PApplet.main("Game.haupt"); // Proccesing main wird aufgerufen
 	}
 
-	
+
 	public void setup(){
 		frameRate(20);		 // Framerate wird auf 20 gehalten
+		gbuttons.buttonsetup(this);
 	}
 	
+	
+	
 	public void settings(){
+		
 		size(800,800); // Unser spiel wird in einem Fenster mit 800x600 geöffnet
 		System.out.println(sketchPath()); // Der SketchPath wird ausgegeben, ist unser arbeitspfad für Dateien.
 		imgloader.LoadImageCharMov(pimg); // Der Hauptcharackter wird geladen.
@@ -54,7 +61,11 @@ public class haupt extends PApplet{
 	
 	
 	public void draw(){
-		System.out.println(frameRate);
+		int test2 = mouseX;
+		int test3 = mouseY;
+		
+		System.out.println("X Achse: " + test2 + " | Y Achse: " +test3);
+		//System.out.println(frameRate);
 		 background(backgroundimg[backloader.backgroundid]);	// Hintergrund der geladen wird
 		 //System.out.println(backloader.backgroundid); 
 		 tbox.Textbox(textAusgabe,this,font);
@@ -68,10 +79,11 @@ public class haupt extends PApplet{
 		}
 		if(bewegungseitlich <= 20 ){ // Wenn der Char auf der X Achse auf 20 ist:
 			bewegungseitlich = backloader.backgroundchangerleft(bewegungseitlich); // wird der hintergrund nach links geändert
+			gbuttons.buttonForAll.show();
 		}
 		
 		if(keyPressed == false){ // Hier befindet sich die Idle Animation
-			//delay(400); // Delay von 200 mili sekunden
+			delay(200); // Delay von 200 mili sekunden
 			if (animationchanger == 6){ // einfacher Switch für die Idle Animation
 				animationchanger = 7;
 			}else{
@@ -80,6 +92,19 @@ public class haupt extends PApplet{
 		}
 		
 	}
+	
+public void controlEvent(ControlEvent theEvent){
+	System.out.println(theEvent.getController().getName());
+}
+
+public void Antwort(int theValue){
+	System.out.println("test");
+	textAusgabe ="Button Pressed";
+	gbuttons.buttonForAll.hide();
+}
+public void test(int theVaule){
+	textAusgabe = "Button Test pressed";
+}
 	
 	public void keyPressed(){ // Alle funktionen für Key presses
 		//test platzhalter = new test(this);
@@ -110,6 +135,9 @@ public class haupt extends PApplet{
 				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);	
 			}
 				
+		}
+		if((key == ENTER || key == RETURN)){
+			textAusgabe = "Enter Wurde gedr�ckt";
 		}
 		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
