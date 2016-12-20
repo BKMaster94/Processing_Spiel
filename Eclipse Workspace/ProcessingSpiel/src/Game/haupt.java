@@ -9,18 +9,19 @@ public class haupt extends PApplet{
 // Initialisierung //////////////
 	//ControlP5 cp5 = new ControlP5(this);
 	public int animationchanger=0;
-	public int rightmov = 0;
-	public int downmov= 6;
-	public int upmov=0;
-	public int leftmov=0;
+	public int rightmov = 12;
+	public int downmov= 0;
+	public int upmov=18;
+	public int leftmov=6;
 	public int bewegungseitlich = 50;
 	public int bewegunghorizontal = 50;
+	public int startTime;
 	int testvar =0;
 	///////////
 	public String textAusgabe ="Hallo Welt";
 	///////////
 	public PFont font;
-	public PImage[] pimg = new PImage[30];
+	public PImage[] pimg = new PImage[50];
 	public PImage[] backgroundimg = new PImage[9];
 	PImage test;
 	///////////
@@ -56,6 +57,7 @@ public class haupt extends PApplet{
 		imgloader.LoadImageCharMov(pimg); // Der Hauptcharackter wird geladen.
 		backloader = new BackagroundLoader(backgroundimg); // Alle Hintergründe werden geladen
 		System.out.println(pimg[5]);
+		startTime = millis();
 		
 	}
 	
@@ -64,7 +66,9 @@ public class haupt extends PApplet{
 		int test2 = mouseX;
 		int test3 = mouseY;
 		
-		System.out.println("X Achse: " + test2 + " | Y Achse: " +test3);
+		//System.out.println(animationchanger);
+		System.out.println(frameRate);
+		//System.out.println("X Achse: " + test2 + " | Y Achse: " +test3);
 		//System.out.println(frameRate);
 		 background(backgroundimg[backloader.backgroundid]);	// Hintergrund der geladen wird
 		 //System.out.println(backloader.backgroundid); 
@@ -83,12 +87,18 @@ public class haupt extends PApplet{
 		}
 		
 		if(keyPressed == false){ // Hier befindet sich die Idle Animation
-			delay(200); // Delay von 200 mili sekunden
-			if (animationchanger == 6){ // einfacher Switch für die Idle Animation
-				animationchanger = 7;
-			}else{
-				animationchanger = 6;
+			//delay(200); // Delay von 200 mili sekunden
+			
+			if(millis() > startTime + 200){
+			startTime = millis();
+				
+				if (animationchanger == 0){ // einfacher Switch für die Idle Animation
+    				animationchanger = 1;
+    			}else{
+    				animationchanger = 0;
+    			}
 			}
+
 		}
 		
 	}
@@ -111,8 +121,8 @@ public void test(int theVaule){
 		if((key == 'd' || key == 'D')){ // Bei tastentdruck d Passiert:
 			//System.out.println("w");
 				
-			rightmov = charmov.animationright(rightmov);// Ruft funktion aus imageLoader aus für animation
-				animationchanger = rightmov;
+			rightmov = charmov.animationright(rightmov);
+			animationchanger = rightmov;// Ruft funktion aus imageLoader aus für animation
 				bewegungseitlich = charmov.charbewegungrechts(bewegungseitlich); // der char bewegt sich in folgende richtung	
 		}
 		if((key == 'a' || key == 'A')){ // Bei Tastendruck a Passiert :
@@ -126,12 +136,16 @@ public void test(int theVaule){
 			if(backloader.backgroundid == 0){// Wenn der Backgroundid 0 ist also erstes bild:
 				
 				if(movmenthaltlinks == true){ // und der bool wert true ist
+					leftmov = charmov.animationleft(leftmov);
+					animationchanger = leftmov;
 					bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich); // Charackter bewegung in die richtung
 				}else{
 					
 				}
 				
 			}else{ // Bei anderen backgrounds darf char sich bewegen
+				leftmov = charmov.animationleft(leftmov);
+				animationchanger = leftmov;
 				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);	
 			}
 				
@@ -141,6 +155,8 @@ public void test(int theVaule){
 		}
 		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
+			upmov = charmov.animationup(upmov);
+			animationchanger = upmov;
 			bewegunghorizontal = charmov.charbewegunghoch(bewegunghorizontal);// Char bewegt sich in die richtung
 		}
 		if((key == 's' || key == 'S')){ // Bei tastendtuck s Passiert:
@@ -152,7 +168,7 @@ public void test(int theVaule){
 				movmenthaltrunter = true;
 			}
 			if(movmenthaltrunter == true){
-				downmov = charmov.animtaiondown(downmov);
+				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
 				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal); // Char bewegt sich in die richtung
 			}

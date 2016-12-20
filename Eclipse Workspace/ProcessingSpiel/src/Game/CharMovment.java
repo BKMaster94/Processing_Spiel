@@ -3,7 +3,7 @@ package Game;
 public class CharMovment {
 	//BackagroundLoader backloader = new BackagroundLoader();
 	haupt bla;
-	public int animationright(int movment){ // Animationbewegung für Rechtsbewegung
+	public int animationdown(int movment){ // Animationbewegung für Rechtsbewegung
 		if(movment <= 4){ // Solagen die animation im rahmen ist wird diese ausgeführt
 			movment++;
 		}if (movment == 5){ // Wenn die animation außerhalb ist wird diese zurück gesetzt
@@ -11,7 +11,7 @@ public class CharMovment {
 		}
 			return movment;
 	}
-	public int animtaiondown(int movment){// Animationsbewegung für die Bewegung nach unten Der rest ist wie vorher
+	public int animationleft(int movment){// Animationsbewegung für die Bewegung nach unten Der rest ist wie vorher
 		if(movment <= 10){
 			movment++;
 		}if (movment == 11){
@@ -20,17 +20,17 @@ public class CharMovment {
 		return movment;
 	}
 	
-	public int animationup(int movment){// Animationsbewegung für die Bewegung nach oben Der rest ist wie vorher
-		if(movment <= 12){
+	public int animationright(int movment){// Animationsbewegung für die Bewegung nach oben Der rest ist wie vorher
+		if(movment <= 16){
 			movment++;
-		}if (movment == 17){
-			movment = 12;
-		}		
+		if (movment == 17){
+		movment = 12;
+		}}		
 		return movment;
 	}
 	
-	public int animationleft(int movment){// Animationsbewegung für die Bewegung nach links Der rest ist wie vorher
-		if(movment <= 18){
+	public int animationup(int movment){// Animationsbewegung für die Bewegung nach links Der rest ist wie vorher
+		if(movment <= 22){
 			movment++;
 		}if (movment == 23){
 			movment = 18;
