@@ -4,6 +4,8 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PFont;
 import controlP5.*;	
+import ddf.minim.*;
+import ddf.minim.Controller;
 
 public class haupt extends PApplet{
 // Initialisierung //////////////
@@ -17,10 +19,10 @@ public class haupt extends PApplet{
 	public int bewegunghorizontal = 50;
 	public int startTime;
 	int entercutscene=0;
-	int testvar =0;
-	int abzaelen =0;
-	int Fadein=255;
-	int Fadeout=0;
+	int fadeIn=0;
+	int schrittZaehler = 0;
+	float gainVoulumeMusik = (float) -15.0;
+	float gainVoulumeSound = (float) -10.0;
 	///////////
 	public String textAusgabe ="Hallo Welt";
 	///////////
@@ -29,11 +31,13 @@ public class haupt extends PApplet{
 	public PImage[] backgroundimg = new PImage[9];
 	PImage test;
 	///////////
-	public FadeEffect effekte = new FadeEffect();
+	public AudioPlayer song;
+	public AudioPlayer levelChangeSound;
 	public gameButtons gbuttons = new gameButtons();
 	public hitCollisionUmgebung coll = new hitCollisionUmgebung();
 	public ImageLoader imgloader = new ImageLoader();
 	public BackagroundLoader backloader;
+	Minim minim;
 	CharMovment charmov = new CharMovment();
 	TextBoxTalk tbox = new TextBoxTalk();
 	///////////
@@ -41,11 +45,13 @@ public class haupt extends PApplet{
 	boolean movmenthaltrunter = true;
 	boolean movmenthalthoch = true;
 	boolean movmenthaltrechts = true;
-	boolean erstecutscene = false;
+	boolean erstecutscene = true;
 	boolean enterswitch = false;
 	boolean laufstop = false;
 	boolean animationstop = false;
 	boolean switch1 = false;
+	boolean animationMovment = false;
+	Controller tester;
 ///////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -62,82 +68,82 @@ public class haupt extends PApplet{
 	
 	public void settings(){
 		
-		size(800,800); // Unser spiel wird in einem Fenster mit 800x600 geÃ¶ffnet
+		size(800,800); // Unser spiel wird in einem Fenster mit 800x800 geÃ¶ffnet
 		System.out.println(sketchPath()); // Der SketchPath wird ausgegeben, ist unser arbeitspfad fÃ¼r Dateien.
 		imgloader.LoadImageCharMov(pimg); // Der Hauptcharackter wird geladen.
 		backloader = new BackagroundLoader(backgroundimg); // Alle HintergrÃ¼nde werden geladen
-		System.out.println(pimg[5]);
-		startTime = millis();
-		
+		//System.out.println(pimg[5]); 
+		startTime = millis(); // Millis wird gestartet
+		minim = new Minim(this); // Neues minim Objekt erstellen
+		levelChangeSound = minim.loadFile("/Sound/Change.wav"); // Laden der Sound Datei !
+		song = minim.loadFile("/Sound/Chellos.wav"); // die Sound Datei wird von minim Geladen und an dem song objekt weiter gegeben
+		song.play(); // Der sound wird abgespielt
+		song.loop(); // Der sound wird Unendlich lange Wiederholt
+		song.setGain(gainVoulumeMusik); // Der Sound wird um -15 DB gesunken
+		levelChangeSound.setGain(gainVoulumeSound); // Der Sound wird um -10 DB Gesunken
 	}
 	
 	
 	public void draw(){
-		int test2 = mouseX;
-		int test3 = mouseY;
 		
-		if(switch1=false){
-			Fadein = Fadein-1;
+		if(switch1==true){ // FadeIn Effekt Berechnung für den Levelwechsel
+			fadeIn = fadeIn +10; // Wert wird mit +10 Addiert!
+			tint(255,fadeIn);
+			if(fadeIn>255){ // Wenn der FadeIn über 255 ist wird der Switch betätigt und die Variable wieder auf 0 gesetzt
+				switch1=false;
+				tint(255,fadeIn);
+				fadeIn=0;
+			}
 		}
 		
-		System.out.println(entercutscene);
-		//System.out.println(animationchanger);
 		//System.out.println(frameRate);
-		//System.out.println("X Achse: " + test2 + " | Y Achse: " +test3);
-		//System.out.println(frameRate);
-		 background(0,0,0);
-		 image(backgroundimg[backloader.backgroundid],0,0);
-		 // Hintergrund der geladen wird
-		 //System.out.println(backloader.backgroundid); 
+		 background(0,0,0); // Weiterer Hintergrund der für den FadeIn Effekt genutzt wird
+		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird
 		 tbox.Textbox(textAusgabe,this,font);
-		 //System.out.println(wert);
-		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);
-		// System.out.println(animationchanger);
-		 // Das wird der hauptcharackter
-		 //System.out.println(bewegungseitlich);
+		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
 		if(bewegungseitlich >= 570){ // Wenn char auf der x Achse 570 erreicht:
-			tint(255,Fadein);			
+			tint(255,0);	// Die Transperenz wird auf 0 gesetzt
+			switch1 = true;	// Der Switch für den FadeIn Effekt wird umgelegt
+			levelChangeSound.play(); // Beim Wechseln des Levels wird ein Sound Abgespielt
 			bewegungseitlich = backloader.backgroundchangerright(bewegungseitlich);// Wird der Hintergrund gewechselt nach rechts
-			//tint(255,255);
+			levelChangeSound.rewind(); // Wichtig damit der Sound wieder am Anfang ist sonst BUG !
 		}
 		if(bewegungseitlich <= 20 ){ // Wenn der Char auf der X Achse auf 20 ist:
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
 			bewegungseitlich = backloader.backgroundchangerleft(bewegungseitlich); // wird der hintergrund nach links geÃ¤ndert
 			gbuttons.buttonForAll.show();
+			levelChangeSound.rewind(); // Wichtig damit der Sound wieder am Anfang ist sonst BUG !
 		}
 		
-		if(keyPressed == false){ // Hier befindet sich die Idle Animation
-			//delay(200); // Delay von 200 mili sekunden
-			
+		if(keyPressed == false){ // Hier befindet sich die Idle Animation			
 			if(millis() > startTime + 200){
 			startTime = millis();
-				
-				if (animationchanger == 0){ // einfacher Switch fÃ¼r die Idle Animation
+				if (animationchanger == 0){ // einfacher Switch für die Idle Animation
     				animationchanger = 1;
     			}else{
     				animationchanger = 0;
     			}
 			}
-
 		}
 		
-		// Hier kommt der Content vom Spiel / Events
-		
-		
-		cutscene();
+		//************************ Hier kommt der Content vom Spiel / Events ****************************
+		cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
 		
 		
 	}
 	
 public void controlEvent(ControlEvent theEvent){
-	System.out.println(theEvent.getController().getName());
+	System.out.println(theEvent.getController().getName()); // Event Controller für die Button Abfrage
 }
 
-public void Antwort(int theValue){
+public void Antwort(int theValue){ // Button Name Antwort wird hier Aufgerufen und kann manipuliert werden
 	System.out.println("test");
 	textAusgabe ="Button Pressed";
 	gbuttons.buttonForAll.hide();
 }
-public void test(int theVaule){
+public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
 	textAusgabe = "Button Test pressed";
 }
 	
@@ -181,9 +187,14 @@ public void test(int theVaule){
 			}
 				
 		}
-		if((key == ENTER || key == RETURN)){
+		if((key == ENTER || key == RETURN)){ // Bei Tastendruck Enter / Return :
 			//textAusgabe = "Enter Wurde gedrückt";
-				entercutscene = entercutscene +1;
+			
+			if(erstecutscene == true){
+				if(animationMovment == false){
+					entercutscene = entercutscene +1;	
+				}
+			}
 		}
 		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
@@ -212,32 +223,36 @@ public void test(int theVaule){
 	}
 
 	
-	
-	public void cutscene(){
-		if(erstecutscene == false){
+	public void cutscene(){ // Erste Cutscene
+		if(erstecutscene == true){
 			laufstop = true;
 			if(entercutscene == 0){
 			textAusgabe = "Held: Oh man ... es ist schon recht Spät.";
 			}
 			if(entercutscene == 1){
 				textAusgabe = "Held: Ich sollte Vielleicht mal ins Bett.";
-				if(animationstop == false){
-			for(int test=0; test<=10;test++){
-				System.out.println(test);
+					if(schrittZaehler != 10){
+				animationMovment = true;
+				//System.out.println(schrittZaehler);
 				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
 				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal);
-			}
-				animationstop = true;
-			
-				}
+				schrittZaehler++;
+					}
+					if(schrittZaehler == 10){
+						animationMovment = false;
+					}
+				
 			}
 				if(entercutscene >= 2){
+					schrittZaehler=0;
 					textAusgabe = "Held: Dann mal los.";
-					erstecutscene = true;
+					erstecutscene = false;
 					laufstop = false;
+					entercutscene = 0;
 					}
 		}
+		//System.out.println(entercutscene);
 	}
 	
 	
