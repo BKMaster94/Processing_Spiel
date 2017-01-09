@@ -1,0 +1,12 @@
+package Game;
+
+public class FadeEffect extends haupt{
+
+	
+	public void FadeIn(){
+		tint(255,0);
+	}
+	public void FadeOut(){
+		tint(255,255);
+	}
+}

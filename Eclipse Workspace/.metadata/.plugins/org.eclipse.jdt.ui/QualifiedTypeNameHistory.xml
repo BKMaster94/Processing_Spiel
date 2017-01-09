@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="processing.core.PImage"/>
-<fullyQualifiedTypeName name="processing.core.PApplet"/>
 <fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
+<fullyQualifiedTypeName name="processing.core.PFont"/>
+<fullyQualifiedTypeName name="processing.core.PApplet"/>
 </qualifiedTypeNameHistroy>

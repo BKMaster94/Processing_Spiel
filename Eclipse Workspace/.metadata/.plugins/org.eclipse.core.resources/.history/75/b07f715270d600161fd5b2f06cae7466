@@ -1,0 +1,25 @@
+package Game;
+
+import processing.core.PFont;
+
+public class AnimationCutScene {
+
+	public CharMovment bewegung = new CharMovment();
+	public TextBoxTalk sprechen = new TextBoxTalk();
+	public haupt haupt = new haupt();
+	public PFont font;
+	
+	public void startScene(){
+		if (haupt.erstecutscene == false){
+			sprechen.Textbox("HELD: Oh man ... Doch so Spät", haupt, font);
+			if(haupt.key == RETURN){
+				
+			}
+			haupt.erstecutscene = true;
+		}
+
+		
+		
+	}
+	
+}

@@ -1,0 +1,7 @@
+package Game;
+
+public class AnimationCutScene {
+
+	public CharMovment bewegung = new CharMovment();
+	
+}

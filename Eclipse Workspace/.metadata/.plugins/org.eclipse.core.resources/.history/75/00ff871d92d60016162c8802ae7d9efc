@@ -1,0 +1,32 @@
+package Game;
+
+import java.io.File;
+
+
+import processing.core.PApplet;
+
+public class FadeLoad extends PApplet{
+
+	
+	int i=0;
+	File verzeichnis = new File("Images/Background");  // Verzeichniss wird aufgerufen
+	File[] files = verzeichnis.listFiles(); // Anzahl an dateien werden gesucht
+	for(File file :files){
+	    if(file.isFile()){ // Alle Dateien Werden gelesen
+	       i++;
+	   }
+	}	
+	System.out.println(i);
+
+	// Laden der Bilder in das PImage Array Um Hintergründe zu laden
+		for (int y = 0 ;  y < char1.length;++y){
+			sketchPath();
+			char1[y] = "Images/Background/background"+y+".jpg";
+			haupt[y] = loadImage(char1[y]);
+			System.out.println("erfolg");
+		}
+	
+	
+	
+	
+}

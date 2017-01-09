@@ -41,8 +41,10 @@ public class BackagroundLoader extends PApplet{
 	// Background Changer nach rechts
 	public int backgroundchangerright(int bewegung){
 		if (backgroundid == 0){
+		
 			backgroundid = backgroundid+1;
 			bewegung = 50;
+	
 		}
 		return bewegung;
 	}

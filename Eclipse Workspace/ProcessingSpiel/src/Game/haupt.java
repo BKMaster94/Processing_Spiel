@@ -16,7 +16,11 @@ public class haupt extends PApplet{
 	public int bewegungseitlich = 50;
 	public int bewegunghorizontal = 50;
 	public int startTime;
+	int entercutscene=0;
 	int testvar =0;
+	int abzaelen =0;
+	int Fadein=255;
+	int Fadeout=0;
 	///////////
 	public String textAusgabe ="Hallo Welt";
 	///////////
@@ -25,6 +29,7 @@ public class haupt extends PApplet{
 	public PImage[] backgroundimg = new PImage[9];
 	PImage test;
 	///////////
+	public FadeEffect effekte = new FadeEffect();
 	public gameButtons gbuttons = new gameButtons();
 	public hitCollisionUmgebung coll = new hitCollisionUmgebung();
 	public ImageLoader imgloader = new ImageLoader();
@@ -36,6 +41,11 @@ public class haupt extends PApplet{
 	boolean movmenthaltrunter = true;
 	boolean movmenthalthoch = true;
 	boolean movmenthaltrechts = true;
+	boolean erstecutscene = false;
+	boolean enterswitch = false;
+	boolean laufstop = false;
+	boolean animationstop = false;
+	boolean switch1 = false;
 ///////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -44,7 +54,7 @@ public class haupt extends PApplet{
 
 
 	public void setup(){
-		frameRate(20);		 // Framerate wird auf 20 gehalten
+		frameRate(15);		 // Framerate wird auf 20 gehalten
 		gbuttons.buttonsetup(this);
 	}
 	
@@ -66,11 +76,18 @@ public class haupt extends PApplet{
 		int test2 = mouseX;
 		int test3 = mouseY;
 		
+		if(switch1=false){
+			Fadein = Fadein-1;
+		}
+		
+		System.out.println(entercutscene);
 		//System.out.println(animationchanger);
-		System.out.println(frameRate);
+		//System.out.println(frameRate);
 		//System.out.println("X Achse: " + test2 + " | Y Achse: " +test3);
 		//System.out.println(frameRate);
-		 background(backgroundimg[backloader.backgroundid]);	// Hintergrund der geladen wird
+		 background(0,0,0);
+		 image(backgroundimg[backloader.backgroundid],0,0);
+		 // Hintergrund der geladen wird
 		 //System.out.println(backloader.backgroundid); 
 		 tbox.Textbox(textAusgabe,this,font);
 		 //System.out.println(wert);
@@ -79,7 +96,9 @@ public class haupt extends PApplet{
 		 // Das wird der hauptcharackter
 		 //System.out.println(bewegungseitlich);
 		if(bewegungseitlich >= 570){ // Wenn char auf der x Achse 570 erreicht:
-			bewegungseitlich = backloader.backgroundchangerright(bewegungseitlich); // Wird der Hintergrund gewechselt nach rechts
+			tint(255,Fadein);			
+			bewegungseitlich = backloader.backgroundchangerright(bewegungseitlich);// Wird der Hintergrund gewechselt nach rechts
+			//tint(255,255);
 		}
 		if(bewegungseitlich <= 20 ){ // Wenn der Char auf der X Achse auf 20 ist:
 			bewegungseitlich = backloader.backgroundchangerleft(bewegungseitlich); // wird der hintergrund nach links geÃ¤ndert
@@ -101,6 +120,12 @@ public class haupt extends PApplet{
 
 		}
 		
+		// Hier kommt der Content vom Spiel / Events
+		
+		
+		cutscene();
+		
+		
 	}
 	
 public void controlEvent(ControlEvent theEvent){
@@ -120,11 +145,13 @@ public void test(int theVaule){
 		//test platzhalter = new test(this);
 		if((key == 'd' || key == 'D')){ // Bei tastentdruck d Passiert:
 			//System.out.println("w");
-				
+				if(laufstop == false){
 			rightmov = charmov.animationright(rightmov);
 			animationchanger = rightmov;// Ruft funktion aus imageLoader aus fÃ¼r animation
 				bewegungseitlich = charmov.charbewegungrechts(bewegungseitlich); // der char bewegt sich in folgende richtung	
-		}
+				}
+			}
+				
 		if((key == 'a' || key == 'A')){ // Bei Tastendruck a Passiert :
 			
 			if (bewegungseitlich < 0){ // Wenn der Charackter bei der x Achse kleiner als 0 ist:
@@ -136,28 +163,35 @@ public void test(int theVaule){
 			if(backloader.backgroundid == 0){// Wenn der Backgroundid 0 ist also erstes bild:
 				
 				if(movmenthaltlinks == true){ // und der bool wert true ist
+					if(laufstop == false){
 					leftmov = charmov.animationleft(leftmov);
 					animationchanger = leftmov;
 					bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich); // Charackter bewegung in die richtung
+					}
 				}else{
 					
 				}
 				
 			}else{ // Bei anderen backgrounds darf char sich bewegen
+				if(laufstop == false){
 				leftmov = charmov.animationleft(leftmov);
 				animationchanger = leftmov;
 				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);	
+				}
 			}
 				
 		}
 		if((key == ENTER || key == RETURN)){
-			textAusgabe = "Enter Wurde gedrückt";
+			//textAusgabe = "Enter Wurde gedrückt";
+				entercutscene = entercutscene +1;
 		}
 		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
+			if(laufstop == false){
 			upmov = charmov.animationup(upmov);
 			animationchanger = upmov;
 			bewegunghorizontal = charmov.charbewegunghoch(bewegunghorizontal);// Char bewegt sich in die richtung
+			}
 		}
 		if((key == 's' || key == 'S')){ // Bei tastendtuck s Passiert:
 			//textAusgabe = "das ist die taste s";
@@ -168,11 +202,51 @@ public void test(int theVaule){
 				movmenthaltrunter = true;
 			}
 			if(movmenthaltrunter == true){
+				if(laufstop == false){
 				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
 				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal); // Char bewegt sich in die richtung
+				}
 			}
 		}
 	}
 
+	
+	
+	public void cutscene(){
+		if(erstecutscene == false){
+			laufstop = true;
+			if(entercutscene == 0){
+			textAusgabe = "Held: Oh man ... es ist schon recht Spät.";
+			}
+			if(entercutscene == 1){
+				textAusgabe = "Held: Ich sollte Vielleicht mal ins Bett.";
+				if(animationstop == false){
+			for(int test=0; test<=10;test++){
+				System.out.println(test);
+				downmov = charmov.animationdown(downmov);
+				animationchanger = downmov;
+				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal);
+			}
+				animationstop = true;
+			
+				}
+			}
+				if(entercutscene >= 2){
+					textAusgabe = "Held: Dann mal los.";
+					erstecutscene = true;
+					laufstop = false;
+					}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
