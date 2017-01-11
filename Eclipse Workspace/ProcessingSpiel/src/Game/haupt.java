@@ -15,8 +15,8 @@ public class haupt extends PApplet{
 	public int downmov= 0;
 	public int upmov=18;
 	public int leftmov=6;
-	public int bewegungseitlich = 50;
-	public int bewegunghorizontal = 50;
+	public int bewegungseitlich = 250;
+	public int bewegunghorizontal = 250;
 	public int startTime;
 	int entercutscene=0;
 	int fadeIn=0;
@@ -28,15 +28,34 @@ public class haupt extends PApplet{
 	///////////
 	public PFont font;
 	public PImage[] pimg = new PImage[50];
-	public PImage[] backgroundimg = new PImage[9];
+	public PImage[] backgroundimg = new PImage[30];
+	public PImage[] backgroundcollision = new PImage[30];
 	PImage test;
+	///////////
+	AudioPlayer luca1;
+	AudioPlayer luca2;
+	AudioPlayer luca3;
+	AudioPlayer luca4;
+	AudioPlayer luca5;
+	AudioPlayer luca6;
+	AudioPlayer luca7;
+	
+	AudioPlayer soren1;
+	AudioPlayer soren2;
+	AudioPlayer soren3;
+	AudioPlayer soren4;
+	AudioPlayer soren5;
+	AudioPlayer soren6;
+	AudioPlayer soren7;
 	///////////
 	public AudioPlayer song;
 	public AudioPlayer levelChangeSound;
+	public AudioPlayer bossMusik;
 	public gameButtons gbuttons = new gameButtons();
 	public hitCollisionUmgebung coll = new hitCollisionUmgebung();
 	public ImageLoader imgloader = new ImageLoader();
 	public BackagroundLoader backloader;
+	public hitCollisionUmgebung collisionUmgebung;
 	Minim minim;
 	CharMovment charmov = new CharMovment();
 	TextBoxTalk tbox = new TextBoxTalk();
@@ -72,20 +91,64 @@ public class haupt extends PApplet{
 		System.out.println(sketchPath()); // Der SketchPath wird ausgegeben, ist unser arbeitspfad f√ºr Dateien.
 		imgloader.LoadImageCharMov(pimg); // Der Hauptcharackter wird geladen.
 		backloader = new BackagroundLoader(backgroundimg); // Alle Hintergr√ºnde werden geladen
+		collisionUmgebung = new hitCollisionUmgebung();
+		collisionUmgebung.backagroundcollision(backgroundcollision);
 		//System.out.println(pimg[5]); 
 		startTime = millis(); // Millis wird gestartet
 		minim = new Minim(this); // Neues minim Objekt erstellen
+		//******** Lucas Eingesprochenes *****
+		luca1 = minim.loadFile("../Luca/Teil0.mp3");
+		luca2 = minim.loadFile("../Luca/Teil1.mp3");
+		luca3 = minim.loadFile("../Luca/Teil2.mp3");
+		luca4 = minim.loadFile("../Luca/Teil3.mp3");
+		luca5 = minim.loadFile("../Luca/Teil4.mp3");
+		luca6 = minim.loadFile("../Luca/Teil5.mp3");
+		luca7 = minim.loadFile("../Luca/Teil6.mp3");
+		
+		luca1.setGain(10.0f);
+		luca2.setGain(10.0f);
+		luca3.setGain(10.0f);
+		luca4.setGain(10.0f);
+		luca5.setGain(10.0f);
+		luca6.setGain(10.0f);
+		luca7.setGain(10.0f);
+		// ****** ENDE LUCA *****
+		// ****** Sˆren Eingesprochenes *****
+		soren1 = minim.loadFile("../Soren/Teil1.mp3");
+		soren2 = minim.loadFile("../Soren/Teil2.mp3");
+		soren3 = minim.loadFile("../Soren/Teil3.mp3");
+		soren4 = minim.loadFile("../Soren/Teil4.mp3");
+		soren5 = minim.loadFile("../Soren/Teil5.mp3");
+		soren6 = minim.loadFile("../Soren/Falsch.mp3");
+		soren7 = minim.loadFile("../Soren/Richtig.mp3");
+		
+		soren1.setGain(10.0f);
+		soren2.setGain(10.0f);
+		soren3.setGain(10.0f);
+		soren4.setGain(10.0f);
+		soren5.setGain(10.0f);
+		soren6.setGain(10.0f);
+		soren7.setGain(10.0f);
+		// ****** ENDE Sˆren *****
 		levelChangeSound = minim.loadFile("/Sound/Change.wav"); // Laden der Sound Datei !
 		song = minim.loadFile("/Sound/Chellos.wav"); // die Sound Datei wird von minim Geladen und an dem song objekt weiter gegeben
+		bossMusik = minim.loadFile("/Sound/guitar.mp3");
 		song.play(); // Der sound wird abgespielt
 		song.loop(); // Der sound wird Unendlich lange Wiederholt
 		song.setGain(gainVoulumeMusik); // Der Sound wird um -15 DB gesunken
 		levelChangeSound.setGain(gainVoulumeSound); // Der Sound wird um -10 DB Gesunken
+		bossMusik.setGain(gainVoulumeSound); // Bossmusik wird um -10 DB Gesunken
+		bossMusik.play();
+		bossMusik.loop();
+		bossMusik.mute(); 
+		//song.mute(); // Musik Muten
+		//song.unmute(); // Song wieder Unmuten
 	}
 	
 	
 	public void draw(){
 		
+
 		if(switch1==true){ // FadeIn Effekt Berechnung f¸r den Levelwechsel
 			fadeIn = fadeIn +10; // Wert wird mit +10 Addiert!
 			tint(255,fadeIn);
@@ -94,11 +157,13 @@ public class haupt extends PApplet{
 				tint(255,fadeIn);
 				fadeIn=0;
 			}
-		}
-		
+		}	
 		//System.out.println(frameRate);
 		 background(0,0,0); // Weiterer Hintergrund der f¸r den FadeIn Effekt genutzt wird
+		 image(backgroundcollision[backloader.backgroundid],0,0);
 		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird
+	
+		
 		 tbox.Textbox(textAusgabe,this,font);
 		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
 		if(bewegungseitlich >= 570){ // Wenn char auf der x Achse 570 erreicht:
@@ -127,9 +192,27 @@ public class haupt extends PApplet{
     			}
 			}
 		}
+		//System.out.println(backloader.backgroundid);
 		
+		// ***** Musik Steuerung **** 
+		
+		if(backloader.backgroundid == 1 || backloader.backgroundid == 4){
+			song.mute();
+			bossMusik.unmute();
+		}else{
+			song.unmute();
+			bossMusik.mute();
+		}
+		
+		
+		
+		// ****** Musik Steuerung Ende ******
 		//************************ Hier kommt der Content vom Spiel / Events ****************************
-		cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
+		
+		
+		
+		//
+		//cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
 		
 		
 	}
@@ -151,6 +234,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		//test platzhalter = new test(this);
 		if((key == 'd' || key == 'D')){ // Bei tastentdruck d Passiert:
 			//System.out.println("w");
+			 pixelcollisionright(bewegungseitlich,bewegunghorizontal);
 				if(laufstop == false){
 			rightmov = charmov.animationright(rightmov);
 			animationchanger = rightmov;// Ruft funktion aus imageLoader aus f√ºr animation
@@ -168,7 +252,8 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 
 			if(backloader.backgroundid == 0){// Wenn der Backgroundid 0 ist also erstes bild:
 				
-				if(movmenthaltlinks == true){ // und der bool wert true ist
+				if(movmenthaltlinks == true){
+					pixelcollisionleft(bewegungseitlich,bewegunghorizontal);// und der bool wert true ist
 					if(laufstop == false){
 					leftmov = charmov.animationleft(leftmov);
 					animationchanger = leftmov;
@@ -178,7 +263,8 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 					
 				}
 				
-			}else{ // Bei anderen backgrounds darf char sich bewegen
+			}else{
+				pixelcollisionleft(bewegungseitlich,bewegunghorizontal);// Bei anderen backgrounds darf char sich bewegen
 				if(laufstop == false){
 				leftmov = charmov.animationleft(leftmov);
 				animationchanger = leftmov;
@@ -198,6 +284,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		}
 		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
+			pixelcollisionup(bewegungseitlich,bewegunghorizontal);
 			if(laufstop == false){
 			upmov = charmov.animationup(upmov);
 			animationchanger = upmov;
@@ -213,6 +300,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 				movmenthaltrunter = true;
 			}
 			if(movmenthaltrunter == true){
+				pixelcollisiondown(bewegungseitlich,bewegunghorizontal);
 				if(laufstop == false){
 				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
@@ -223,7 +311,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 	}
 
 	
-	public void cutscene(){ // Erste Cutscene
+	/*public void cutscene(){ // Erste Cutscene
 		if(erstecutscene == true){
 			laufstop = true;
 			if(entercutscene == 0){
@@ -253,10 +341,118 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 					}
 		}
 		//System.out.println(entercutscene);
+	}*/
+	
+	
+	
+	public void pixelcollisionright(int x, int y){
+		
+		loadPixels();
+		backgroundcollision[backloader.backgroundid].loadPixels();
+		int pixelcordiante=0;
+		pixelcordiante = 26+x+(y+46)*800;
+		
+		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//System.out.println(pixelcordiante);
+		
+		
+		for(int i=1;i <= 4; i++){
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
+			println("Schwarz");
+			laufstop=true;
+			i++;
+			pixelcordiante++;
+		}
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
+			println("Weiﬂ");
+			laufstop=false;
+			i++;
+			pixelcordiante++;
+		}
+		}
+		
 	}
 	
+	public void pixelcollisionleft(int x, int y){
+		loadPixels();
+		backgroundcollision[backloader.backgroundid].loadPixels();
+		int pixelcordiante=0;
+		pixelcordiante = x+(y+46)*800;
+		
+		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//System.out.println(pixelcordiante);
+		
+		
+		for(int i=1;i <= 4; i++){
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
+			println("Schwarz");
+			laufstop=true;
+			i++;
+			pixelcordiante--;
+		}
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
+			println("Weiﬂ");
+			laufstop=false;
+			i++;
+			pixelcordiante--;
+		}
+		}
+		
+	}
 	
+	public void pixelcollisionup(int x, int y){
+		loadPixels();
+		backgroundcollision[backloader.backgroundid].loadPixels();
+		int pixelcordiante=0;
+		pixelcordiante = x+(y+43)*800;
+		
+		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//System.out.println(pixelcordiante);
+		
+		
+		for(int i=1;i <= 2; i++){
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
+			println("Schwarz");
+			laufstop=true;
+			i++;
+			pixelcordiante = pixelcordiante -800;
+		}
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
+			println("Weiﬂ");
+			laufstop=false;
+			i++;
+			pixelcordiante = pixelcordiante -800;
+		}
+		}
+		
+	}
 	
+	public void pixelcollisiondown(int x, int y){
+		loadPixels();
+		backgroundcollision[backloader.backgroundid].loadPixels();
+		int pixelcordiante=0;
+		pixelcordiante = x+(y+64)*800;
+		
+		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//System.out.println(pixelcordiante);
+		
+		
+		for(int i=1;i <= 2; i++){
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
+			println("Schwarz");
+			laufstop=true;
+			i++;
+			pixelcordiante = pixelcordiante +800;
+		}
+		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
+			println("Weiﬂ");
+			laufstop=false;
+			i++;
+			pixelcordiante = pixelcordiante +800;
+		}
+		}
+		
+	}
 	
 	
 	

@@ -8,7 +8,7 @@ import processing.core.PImage;
 public class BackagroundLoader extends PApplet{
 	//////
 	/// *****Initialisieren
-	String[] char1 = new String[5];
+	String[] char1 = new String[30];
 	public int backgroundid = 0;
 	haupt test = new haupt();
 	//////	
@@ -18,7 +18,7 @@ public class BackagroundLoader extends PApplet{
 	
 	public  BackagroundLoader(PImage[] haupt){
 		
-		// Algorithmus für das auslesen der Dateien die im ordner Images/Background sind!
+		//  für das auslesen der Dateien die im ordner Images/Background sind!
 		int i=0;
 		File verzeichnis = new File("Images/Background");  // Verzeichniss wird aufgerufen
 		File[] files = verzeichnis.listFiles(); // Anzahl an dateien werden gesucht
