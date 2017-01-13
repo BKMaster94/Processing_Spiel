@@ -21,9 +21,7 @@ public class ImageLoader extends PApplet{
 		    if(file.isFile()){ // Alle Dateien Werden gelesen
 		       i++;
 		   }
-		}
-		System.out.println(i);
-		
+		}		
 			for (int y = 0 ;  y < char1.length;y++){
 				sketchPath();
 				char1[y] = "Images/CharMov/Walk_"+y+".png";
@@ -43,8 +41,6 @@ public class ImageLoader extends PApplet{
 		       i++;
 		   }
 		}
-		System.out.println(i);
-		
 			for (int y = 0 ;  y < char2.length;y++){
 				sketchPath();
 				char2[y] = "Images/Bosse/Boss"+y+".png";

@@ -15,7 +15,7 @@ public class hitCollisionUmgebung extends PApplet{
 	
 	public  void backagroundcollision(PImage[] haupt){
 		
-		// Algorithmus für das auslesen der Dateien die im ordner Images/Background sind!
+		// Funktion f�r das auslesen der Dateien die im ordner Images/Background sind!
 		int i=0;
 		File verzeichnis = new File("Images/BackgroundCollision");  // Verzeichniss wird aufgerufen
 		File[] files = verzeichnis.listFiles(); // Anzahl an dateien werden gesucht
@@ -24,21 +24,14 @@ public class hitCollisionUmgebung extends PApplet{
 		       i++;
 		   }
 		}	
-		System.out.println(i);
 	
 		// Laden der Bilder in das PImage Array Um Hintergründe zu laden
 			for (int y = 0 ;  y < char1.length;++y){
 				sketchPath();
 				char1[y] = "Images/BackgroundCollision/BackgroundCollision"+y+".png";
 				haupt[y] = loadImage(char1[y]);
-				System.out.println("erfolg");
 			}
 		
 	}
-	
-	
-
-	
-	
 	
 }

@@ -12,11 +12,9 @@ public class BackagroundLoader extends PApplet{
 	public int backgroundid = 0;
 	haupt test = new haupt();
 	public boolean testswitch = false;
-
 	//////	
 
 	public  BackagroundLoader(PImage[] haupt){
-		
 		//  für das auslesen der Dateien die im ordner Images/Background sind!
 		int i=0;
 		File verzeichnis = new File("Images/Background");  // Verzeichniss wird aufgerufen
@@ -26,7 +24,6 @@ public class BackagroundLoader extends PApplet{
 		       i++;
 		   }
 		}	
-		System.out.println(i);
 	
 		// Laden der Bilder in das PImage Array Um Hintergründe zu laden
 			for (int y = 0 ;  y < char1.length;++y){
@@ -35,13 +32,11 @@ public class BackagroundLoader extends PApplet{
 				haupt[y] = loadImage(char1[y]);
 				System.out.println("erfolg");
 			}
-		
 	}
 	// Background changer nach oben
 	public void backgroundchangerup(){
 		if(backgroundid == 1){
 			backgroundid = 5;
-
 		}
 	}
 	
@@ -71,12 +66,10 @@ public class BackagroundLoader extends PApplet{
 	// Background Changer nach links
 	public void backgroundchangerleft(){
 		if (backgroundid == 1){
-			backgroundid = backgroundid-1;
-			
+			backgroundid = backgroundid-1;			
 		}
 		if(backgroundid == 2){
 			backgroundid = backgroundid -1;
-			
 		}
 		if(backgroundid == 3){
 			backgroundid = backgroundid -1;
@@ -87,7 +80,4 @@ public class BackagroundLoader extends PApplet{
 		}
 		
 	}
-	
-	
-
 }

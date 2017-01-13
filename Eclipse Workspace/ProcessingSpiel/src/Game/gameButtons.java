@@ -12,6 +12,7 @@ public class gameButtons {
 	public void buttonsetup(PApplet haupt){
 		buttonBoss1 = new ControlP5(haupt);
 		buttonBoss2 = new ControlP5(haupt);
+		
 		buttonBoss1.addButton("WildLands")
 	.setLabel("Wastelands")
 	.setValue(0)
