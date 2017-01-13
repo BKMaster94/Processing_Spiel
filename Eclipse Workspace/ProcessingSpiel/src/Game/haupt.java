@@ -8,6 +8,7 @@ import ddf.minim.*;
 
 public class haupt extends PApplet{
 // Initialisierung //////////////
+	public int firstCutsceneFadeOut = 255;
 	public int bossKillCount =0;
 	public int animationchanger=0;
 	public int animationchangerboss1=0;
@@ -15,8 +16,8 @@ public class haupt extends PApplet{
 	public int downmov= 0;
 	public int upmov=18;
 	public int leftmov=6;
-	public int bewegungseitlich = 250;
-	public int bewegunghorizontal = 250;
+	public int bewegungseitlich = 480;
+	public int bewegunghorizontal = 200;
 	public int startTime;
 	int entercutscene=0;
 	int fadeIn=0;
@@ -66,6 +67,7 @@ public class haupt extends PApplet{
 	boolean laufstop = false;
 	boolean animationstop = false;
 	boolean switch1 = false;
+	boolean switch2 = false;
 	boolean animationMovment = false;
 	boolean animationMovmentStop = false;
 	boolean cutsceneboss1 = false;
@@ -137,7 +139,23 @@ public class haupt extends PApplet{
 		bossMusik.mute(); 
 	}
 	public void draw(){
-		println(bossKillCount);
+		//println(bossKillCount);
+		
+
+		if(switch2==true){ // FadeIn für die Cutscene !
+			firstCutsceneFadeOut = firstCutsceneFadeOut -13;
+			tint(255,firstCutsceneFadeOut);	
+			if(firstCutsceneFadeOut <=0){
+				switch2 = false;
+			}
+		}
+		
+		if(erstecutscene == true){
+			backloader.backgroundid = 6;
+		}else{
+			backloader.backgroundid = 0;
+		}
+		
 		if(switch1==true){ // FadeIn Effekt Berechnung für den Levelwechsel
 			fadeIn = fadeIn +10; // Wert wird mit +10 Addiert!
 			tint(255,fadeIn);
@@ -147,9 +165,13 @@ public class haupt extends PApplet{
 				fadeIn=0;
 			}
 		}	
-		System.out.println(frameRate);
+		//System.out.println(frameRate);
 		image(backgroundcollision[backloader.backgroundid],0,0);
 		 background(0,0,0); // Weiterer Hintergrund der für den FadeIn Effekt genutzt wird
+		
+		 cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
+		 
+		 
 		 if(backloader.backgroundid == 5){ // Boss nur laden wenn bossarena betreten wird ! 
 			 image(bossimg[animationchangerboss1],0,0);
 		 }
@@ -237,16 +259,13 @@ public class haupt extends PApplet{
 		}
 		// ****** Musik Steuerung Ende ******
 		//************************ Hier kommt der Content vom Spiel / Events ****************************
-		cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
 		if(backloader.backgroundid == 5){
 			cutsceneboss1();
 		}
 		
-		
 		///// ***** Ende Content *****
 	}
 
-	
 	//// **** Movment,Events,Cutscenes,ETC *****
 public void controlEvent(ControlEvent theEvent){
 	System.out.println(theEvent.getController().getName()); // Event Controller für die Button Abfrage
@@ -391,37 +410,72 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 	}
 	
 	public void cutscene(){ // Erste Cutscene
+		println(entercutscene);
+		println(schrittZaehler);
 		if(erstecutscene == true){
 			animationMovmentStop = true;
 			if(entercutscene == 0){
 			textAusgabe = "Held: Oh man ... es ist schon recht Spät.";
 			}
+			
 			if(entercutscene == 1){
 				textAusgabe = "Held: Ich sollte Vielleicht mal ins Bett.";
-					if(schrittZaehler != 10){
+					if(schrittZaehler != 50){
 				animationMovment = true;
-				downmov = charmov.animationdown(downmov);
-				animationchanger = downmov;
-				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal);
+				leftmov = charmov.animationleft(leftmov);
+				animationchanger = leftmov;
+				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);
 				schrittZaehler++;
-					}
-					if(schrittZaehler == 10){
+					}				
+					if(schrittZaehler == 50){
 						animationMovment = false;
+						schrittZaehler = 0;
+						entercutscene = 2;
+						}				
+					}
+			
+				if(entercutscene == 2){
+					textAusgabe = "Held: Dann mal los.";
+					if(schrittZaehler != 25){
+						animationMovment = true;
+						upmov = charmov.animationup(upmov);
+						animationchanger = upmov;
+						bewegunghorizontal = charmov.charbewegunghoch(bewegunghorizontal);
+						schrittZaehler++;
+					}
+					if(schrittZaehler >= 24){
+						animationMovment = false;
+						schrittZaehler = 0;
+						entercutscene = 3;
+						}
 					}
 				
-			}
-				if(entercutscene >= 2){
-					schrittZaehler=0;
-					textAusgabe = "Held: Dann mal los.";
+				if(entercutscene == 3){
+					switch2 = true;
+					textAusgabe = "";
+					if(schrittZaehler != 25){
+						animationMovment = true;
+						leftmov = charmov.animationleft(leftmov);
+						animationchanger = leftmov;
+						bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);
+						schrittZaehler++;
+					}
+					if(schrittZaehler >= 24){
+						animationMovment = false;
+						schrittZaehler = 0;
+						entercutscene = 4;
+						}
+					}
+				if(entercutscene >= 4){
+					switch1 = true;
 					erstecutscene = false;
 					animationMovmentStop = false;
 					entercutscene = 0;
+					bewegungseitlich = 185;
+					bewegunghorizontal = 280;
 					}
-				
-		}
-	}
-	
-	
+				}
+			}
 	
 	public void pixelcollisionright(int x, int y){
 		
@@ -429,7 +483,6 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		backgroundcollision[backloader.backgroundid].loadPixels();
 		int pixelcordiante=0;
 		pixelcordiante = 26+x+(y+46)*800;
-		
 		for(int i=1;i <= 4; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
 			laufstop=true;
@@ -440,9 +493,8 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 			laufstop=false;
 			i++;
 			pixelcordiante++;
+			}
 		}
-		}
-		
 	}
 	
 	public void pixelcollisionleft(int x, int y){
@@ -450,7 +502,6 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		backgroundcollision[backloader.backgroundid].loadPixels();
 		int pixelcordiante=0;
 		pixelcordiante = x+(y+46)*800;
-		
 		for(int i=1;i <= 4; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
 			laufstop=true;
@@ -461,9 +512,8 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 			laufstop=false;
 			i++;
 			pixelcordiante--;
+			}
 		}
-		}
-		
 	}
 	
 	public void pixelcollisionup(int x, int y){
@@ -471,7 +521,6 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		backgroundcollision[backloader.backgroundid].loadPixels();
 		int pixelcordiante=0;
 		pixelcordiante = x+(y+43)*800;		
-		
 		for(int i=1;i <= 2; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
 			laufstop=true;
@@ -482,9 +531,8 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 			laufstop=false;
 			i++;
 			pixelcordiante = pixelcordiante -800;
+			}
 		}
-		}
-		
 	}
 	
 	public void pixelcollisiondown(int x, int y){

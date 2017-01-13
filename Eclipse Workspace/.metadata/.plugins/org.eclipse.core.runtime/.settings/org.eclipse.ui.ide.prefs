@@ -1,12 +1,11 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=origin/master
 EXIT_PROMPT_ON_CLOSE_LAST_WINDOW=false
 IMPORT_FILES_AND_FOLDERS_RELATIVE=true
 IMPORT_FILES_AND_FOLDERS_TYPE=23,1
 PROBLEMS_FILTERS_MIGRATE=true
 eclipse.preferences.version=1
-<<<<<<< HEAD
 platformState=1484094768134
-=======
-platformState=1479838903301
->>>>>>> origin/master
 quickStart=false
 tipsAndTricks=true
