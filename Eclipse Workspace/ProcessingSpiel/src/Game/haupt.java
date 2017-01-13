@@ -158,30 +158,43 @@ public class haupt extends PApplet{
 				fadeIn=0;
 			}
 		}	
+		println(bewegunghorizontal);
 		//System.out.println(frameRate);
+		image(backgroundcollision[backloader.backgroundid],0,0);
 		 background(0,0,0); // Weiterer Hintergrund der für den FadeIn Effekt genutzt wird
-		 image(backgroundcollision[backloader.backgroundid],0,0);
+		 
 		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird
 	
 		
 		 tbox.Textbox(textAusgabe,this,font);
 		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
-		if(bewegungseitlich >= 570){ // Wenn char auf der x Achse 570 erreicht:
+		if(bewegungseitlich >= 700){ // Wenn char auf der x Achse 570 erreicht:
 			tint(255,0);	// Die Transperenz wird auf 0 gesetzt
 			switch1 = true;	// Der Switch für den FadeIn Effekt wird umgelegt
 			levelChangeSound.play(); // Beim Wechseln des Levels wird ein Sound Abgespielt
-			bewegungseitlich = backloader.backgroundchangerright(bewegungseitlich);// Wird der Hintergrund gewechselt nach rechts
+			backloader.backgroundchangerright();// Wird der Hinterdsssssssawdasdgrund gewechselt nach rechts
+			bewegungseitlich = 50;
 			levelChangeSound.rewind(); // Wichtig damit der Sound wieder am Anfang ist sonst BUG !
+			backloader.testswitch = false;
+			if(backloader.backgroundid == 4){
+				bewegunghorizontal = 380;
+			}
 		}
-		if(bewegungseitlich <= 20 ){ // Wenn der Char auf der X Achse auf 20 ist:
+		if(bewegungseitlich <= 20){ // Wenn der Char auf der X Achse auf 20 ist:
 			tint(255,0);	
 			switch1 = true;
 			levelChangeSound.play();
-			bewegungseitlich = backloader.backgroundchangerleft(bewegungseitlich); // wird der hintergrund nach links geÃ¤ndert
+			backloader.backgroundchangerleft(); // wird der hintergrund nach links geÃ¤ndert
 			gbuttons.buttonForAll.show();
 			levelChangeSound.rewind(); // Wichtig damit der Sound wieder am Anfang ist sonst BUG !
+			bewegungseitlich = 650;
+			if(backloader.backgroundid == 3){
+				bewegunghorizontal = 250;
+			}
 		}
-		
+		if(backloader.backgroundid == 1 && bewegunghorizontal <= 70){
+			backloader.backgroundchangerup();
+		}
 		if(keyPressed == false){ // Hier befindet sich die Idle Animation			
 			if(millis() > startTime + 200){
 			startTime = millis();
@@ -212,7 +225,7 @@ public class haupt extends PApplet{
 		
 		
 		//
-		//cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
+		cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
 		
 		
 	}
@@ -311,7 +324,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 	}
 
 	
-	/*public void cutscene(){ // Erste Cutscene
+	public void cutscene(){ // Erste Cutscene
 		if(erstecutscene == true){
 			laufstop = true;
 			if(entercutscene == 0){
@@ -341,7 +354,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 					}
 		}
 		//System.out.println(entercutscene);
-	}*/
+	}
 	
 	
 	

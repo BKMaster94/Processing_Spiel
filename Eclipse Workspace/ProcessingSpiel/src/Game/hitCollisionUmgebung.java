@@ -11,12 +11,7 @@ public class hitCollisionUmgebung extends PApplet{
 
 	
 	////////////
-	
-	
-	public boolean collisionright(boolean darflaufen, int bewegungseitlich,int bewegunghorizontal){
-			
-		return darflaufen;
-	}
+
 	
 	public  void backagroundcollision(PImage[] haupt){
 		

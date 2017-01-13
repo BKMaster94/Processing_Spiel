@@ -11,10 +11,8 @@ public class BackagroundLoader extends PApplet{
 	String[] char1 = new String[30];
 	public int backgroundid = 0;
 	haupt test = new haupt();
+	public boolean testswitch = false;
 	//////	
-	
-	public BackagroundLoader() {
-	}
 	
 	public  BackagroundLoader(PImage[] haupt){
 		
@@ -32,30 +30,52 @@ public class BackagroundLoader extends PApplet{
 		// Laden der Bilder in das PImage Array Um Hintergründe zu laden
 			for (int y = 0 ;  y < char1.length;++y){
 				sketchPath();
-				char1[y] = "Images/Background/background"+y+".jpg";
+				char1[y] = "Images/Background/background"+y+".png";
 				haupt[y] = loadImage(char1[y]);
 				System.out.println("erfolg");
 			}
 		
 	}
-	// Background Changer nach rechts
-	public int backgroundchangerright(int bewegung){
-		if (backgroundid == 0){
-		
-			backgroundid = backgroundid+1;
-			bewegung = 50;
-	
+	// Background changer nach oben
+	public void backgroundchangerup(){
+		if(backgroundid == 1){
+			backgroundid = 5;
 		}
-		return bewegung;
+	}
+	// Background Changer nach rechts
+	public void backgroundchangerright(){
+		if(backgroundid == 3){
+			backgroundid = backgroundid+1;
+		}
+		if(backgroundid == 2){
+			backgroundid = backgroundid+1;
+		}
+			if(backgroundid == 1){
+				backgroundid = backgroundid+1;
+			}
+			if (backgroundid == 0){
+		backgroundid = backgroundid+1;
+		test.bewegunghorizontal = 500;
+		}		
 	}
 	
 	// Background Changer nach links
-	public int backgroundchangerleft(int bewegung){
+	public void backgroundchangerleft(){
 		if (backgroundid == 1){
 			backgroundid = backgroundid-1;
-			bewegung = 500;
+			
 		}
-		return bewegung;
+		if(backgroundid == 2){
+			backgroundid = backgroundid -1;
+			
+		}
+		if(backgroundid == 3){
+			backgroundid = backgroundid -1;
+			
+		}
+		if(backgroundid == 4){
+			backgroundid = backgroundid -1;
+		}
 		
 	}
 	
