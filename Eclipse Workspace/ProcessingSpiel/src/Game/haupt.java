@@ -5,7 +5,6 @@ import processing.core.PImage;
 import processing.core.PFont;
 import controlP5.*;	
 import ddf.minim.*;
-import ddf.minim.Controller;
 
 public class haupt extends PApplet{
 // Initialisierung //////////////
@@ -171,7 +170,7 @@ public class haupt extends PApplet{
 		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird
 
 		
-		 tbox.Textbox(textAusgabe,this,font);
+		 tbox.Textbox(textAusgabe,this);
 		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
 		 
 
@@ -187,6 +186,7 @@ public class haupt extends PApplet{
 			if(backloader.backgroundid == 4){
 				bewegunghorizontal = 380;
 			}
+			textAusgabe ="";
 		}
 		if(bewegungseitlich <= 20){ // Wenn der Char auf der X Achse auf 20 ist:
 			tint(255,0);	
@@ -198,6 +198,7 @@ public class haupt extends PApplet{
 			if(backloader.backgroundid == 3){
 				bewegunghorizontal = 250;
 			}
+			textAusgabe ="";
 		}
 		if(backloader.backgroundid == 1 && bewegunghorizontal <= 70){ // Levelcahnge nach oben!
 			tint(255,0);	
@@ -206,6 +207,7 @@ public class haupt extends PApplet{
 			backloader.backgroundchangerup();
 			levelChangeSound.rewind();
 			bewegunghorizontal = 270;
+			textAusgabe ="";
 		}
 		
 		if(backloader.backgroundid == 5 && bewegunghorizontal >= 322){
@@ -216,6 +218,7 @@ public class haupt extends PApplet{
 			levelChangeSound.rewind();
 			bewegunghorizontal = 90;
 			bewegungseitlich = 380;
+			textAusgabe ="";
 		}
 		
 		///// ***** Idle Animationen ******
@@ -259,7 +262,7 @@ public class haupt extends PApplet{
 		}
 		
 		
-		
+
 		// ****** Musik Steuerung Ende ******
 		//************************ Hier kommt der Content vom Spiel / Events ****************************
 		
@@ -279,15 +282,38 @@ public void controlEvent(ControlEvent theEvent){
 }
 
 public void Fallout(int theValue){ // Button Name Antwort wird hier Aufgerufen und kann manipuliert werden
-	System.out.println("test");
-	textAusgabe ="Button Pressed";
 	animationMovmentStop = false;
-	//gbuttons.buttonForAll.hide();
-	
+	gbuttons.buttonBoss1.hide();
+	if(entercutscene >= 7){
+		entercutscene = 0;
+		luca6.play();
+	}
+	textAusgabe = "Luca: Genau, somit hast du die erste Prüfung gemeistert";
+
 }
+
 public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
-	textAusgabe = "Button Test pressed";
-	animationMovmentStop = false;
+	if(entercutscene > 6){
+	luca7.play();
+	luca7.rewind();
+	}
+	textAusgabe = "Luca: Denk beim nächsten Versuch besser nach.";
+}
+
+public void MadMax(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
+	if(entercutscene > 6){
+	luca7.play();
+	luca7.rewind();
+	}
+	textAusgabe = "Luca: Denk beim nächsten Versuch besser nach.";
+}
+
+public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
+	if(entercutscene > 6){
+	luca7.play();
+	luca7.rewind();
+	}
+	textAusgabe = "Luca: Denk beim nächsten Versuch besser nach.";
 }
 	
 	public void keyPressed(){ // Alle funktionen fÃ¼r Key presses
@@ -333,9 +359,10 @@ public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		}
 		if((key == ENTER || key == RETURN)){ // Bei Tastendruck Enter / Return :
 			//textAusgabe = "Enter Wurde gedrückt";
-			
+			if(animationMovment==false){
 			if(animationMovmentStop == true){
 					entercutscene = entercutscene +1;	
+			}
 			}
 		}
 		if((key == 'w' || key == 'W' || keyCode == UP)){ // Bei tastendruck w Passiert:
@@ -371,15 +398,33 @@ public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufe
 				luca1.play();
 			}
 			if(entercutscene == 1){
-				textAusgabe = "Held: Das würde ich selber gerne wissen";
+				textAusgabe = "Held: Wenn ich das selber wüsste, dann würde ich hier nicht Stehen";
 			}
 			if(entercutscene == 2){
 				textAusgabe = "Luca: Da du nun hier bist, Löse meine Aufgabe";
 				luca2.play();
-				
-				cutsceneboss1= true;
-				gbuttons.buttonForAll.show(); // Buttons anzeigen test
 			}
+			if(entercutscene == 3){
+				textAusgabe = "Held: und wenn ich keine Lust dazu habe";
+			}
+			if(entercutscene == 4){
+				textAusgabe = "Luca: Dann wirst du hier dein Ende finden";
+				luca3.play();
+			}
+			if(entercutscene == 5){
+				textAusgabe = "Held: Alles klar hab´s Verstanden";
+			}
+			if(entercutscene == 6){
+				textAusgabe = "Luca: Nun sag mir, in welcher postapokalyptische Welt";
+				luca4.play();
+			}
+			if(entercutscene == 7){
+				textAusgabe = "Luca: fühlte ich mich im Jahre 2015 am wohlsten.";
+				luca5.play();
+				cutsceneboss1= true;
+				gbuttons.buttonBoss1.show(); // Buttons anzeigen test
+			}
+
 		}
 		
 	}
@@ -394,7 +439,7 @@ public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufe
 				textAusgabe = "Held: Ich sollte Vielleicht mal ins Bett.";
 					if(schrittZaehler != 10){
 				animationMovment = true;
-				//System.out.println(schrittZaehler);
+				System.out.println(schrittZaehler);
 				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
 				bewegunghorizontal = charmov.charbewegungrunter(bewegunghorizontal);
@@ -412,7 +457,9 @@ public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufe
 					animationMovmentStop = false;
 					entercutscene = 0;
 					}
+				
 		}
+		
 		//System.out.println(entercutscene);
 	}
 	

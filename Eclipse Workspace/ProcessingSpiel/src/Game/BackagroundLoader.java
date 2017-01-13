@@ -12,8 +12,9 @@ public class BackagroundLoader extends PApplet{
 	public int backgroundid = 0;
 	haupt test = new haupt();
 	public boolean testswitch = false;
+
 	//////	
-	
+
 	public  BackagroundLoader(PImage[] haupt){
 		
 		//  für das auslesen der Dateien die im ordner Images/Background sind!
@@ -40,6 +41,7 @@ public class BackagroundLoader extends PApplet{
 	public void backgroundchangerup(){
 		if(backgroundid == 1){
 			backgroundid = 5;
+
 		}
 	}
 	

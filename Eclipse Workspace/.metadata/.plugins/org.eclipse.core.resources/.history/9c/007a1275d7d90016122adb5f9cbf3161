@@ -1,0 +1,43 @@
+package Game;
+
+import controlP5.*;
+import processing.core.PApplet;
+
+public class gameButtons {
+	public ControlP5 buttonBoss1;
+	public ControlP5 buttonBoss2;
+	public ControlP5 buttonBoss3;
+	public ControlP5 buttonBoss4;
+	
+	public void buttonsetup(PApplet haupt){
+		buttonBoss1 = new ControlP5(haupt);
+		buttonBoss1.addButton("Fallout")
+	.setValue(0)
+	.setPosition(50,700)
+	.setSize(100,50);
+		buttonBoss1.hide();
+	
+		buttonBoss1.addButton("WildLands")
+	.setValue(0)
+	.setPosition(200,700)
+	.setSize(100,50);
+		buttonBoss1.hide();
+	
+		buttonBoss1.addButton("Lösung 3")
+	.setValue(0)
+	.setPosition(350,700)
+	.setSize(100,50);
+		buttonBoss1.hide();
+	
+		buttonBoss1.addButton("Lösung 4")
+	.setValue(0)
+	.setPosition(500,700)
+	.setSize(100,50);
+		buttonBoss1.hide();
+	}
+	
+	
+	
+	
+	
+}
