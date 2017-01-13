@@ -11,6 +11,7 @@ public class haupt extends PApplet{
 // Initialisierung //////////////
 	//ControlP5 cp5 = new ControlP5(this);
 	public int animationchanger=0;
+	public int animationchangerboss1=0;
 	public int rightmov = 12;
 	public int downmov= 0;
 	public int upmov=18;
@@ -27,6 +28,7 @@ public class haupt extends PApplet{
 	public String textAusgabe ="Hallo Welt";
 	///////////
 	public PFont font;
+	public PImage[] bossimg = new PImage[50];
 	public PImage[] pimg = new PImage[50];
 	public PImage[] backgroundimg = new PImage[30];
 	public PImage[] backgroundcollision = new PImage[30];
@@ -60,17 +62,14 @@ public class haupt extends PApplet{
 	CharMovment charmov = new CharMovment();
 	TextBoxTalk tbox = new TextBoxTalk();
 	///////////
-	boolean movmenthaltlinks = true;
-	boolean movmenthaltrunter = true;
-	boolean movmenthalthoch = true;
-	boolean movmenthaltrechts = true;
 	boolean erstecutscene = true;
 	boolean enterswitch = false;
 	boolean laufstop = false;
 	boolean animationstop = false;
 	boolean switch1 = false;
 	boolean animationMovment = false;
-	Controller tester;
+	boolean animationMovmentStop = false;
+	boolean cutsceneboss1 = false;
 ///////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -90,6 +89,7 @@ public class haupt extends PApplet{
 		size(800,800); // Unser spiel wird in einem Fenster mit 800x800 geÃ¶ffnet
 		System.out.println(sketchPath()); // Der SketchPath wird ausgegeben, ist unser arbeitspfad fÃ¼r Dateien.
 		imgloader.LoadImageCharMov(pimg); // Der Hauptcharackter wird geladen.
+		imgloader.LoadImageBoss(bossimg);
 		backloader = new BackagroundLoader(backgroundimg); // Alle HintergrÃ¼nde werden geladen
 		collisionUmgebung = new hitCollisionUmgebung();
 		collisionUmgebung.backagroundcollision(backgroundcollision);
@@ -147,8 +147,9 @@ public class haupt extends PApplet{
 	
 	
 	public void draw(){
+		println(entercutscene);
 		
-
+		
 		if(switch1==true){ // FadeIn Effekt Berechnung für den Levelwechsel
 			fadeIn = fadeIn +10; // Wert wird mit +10 Addiert!
 			tint(255,fadeIn);
@@ -158,17 +159,24 @@ public class haupt extends PApplet{
 				fadeIn=0;
 			}
 		}	
-		println(bewegunghorizontal);
+		//println(bewegunghorizontal);
 		//System.out.println(frameRate);
 		image(backgroundcollision[backloader.backgroundid],0,0);
 		 background(0,0,0); // Weiterer Hintergrund der für den FadeIn Effekt genutzt wird
 		 
+		 
+		 if(backloader.backgroundid == 5){
+			 image(bossimg[animationchangerboss1],0,0);
+		 }
 		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird
-	
+
 		
 		 tbox.Textbox(textAusgabe,this,font);
 		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
-		if(bewegungseitlich >= 700){ // Wenn char auf der x Achse 570 erreicht:
+		 
+
+		 
+		if(bewegungseitlich >= 700 && backloader.backgroundid != 4){ // Wenn char auf der x Achse 570 erreicht:
 			tint(255,0);	// Die Transperenz wird auf 0 gesetzt
 			switch1 = true;	// Der Switch für den FadeIn Effekt wird umgelegt
 			levelChangeSound.play(); // Beim Wechseln des Levels wird ein Sound Abgespielt
@@ -185,17 +193,47 @@ public class haupt extends PApplet{
 			switch1 = true;
 			levelChangeSound.play();
 			backloader.backgroundchangerleft(); // wird der hintergrund nach links geÃ¤ndert
-			gbuttons.buttonForAll.show();
 			levelChangeSound.rewind(); // Wichtig damit der Sound wieder am Anfang ist sonst BUG !
 			bewegungseitlich = 650;
 			if(backloader.backgroundid == 3){
 				bewegunghorizontal = 250;
 			}
 		}
-		if(backloader.backgroundid == 1 && bewegunghorizontal <= 70){
+		if(backloader.backgroundid == 1 && bewegunghorizontal <= 70){ // Levelcahnge nach oben!
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
 			backloader.backgroundchangerup();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 270;
 		}
-		if(keyPressed == false){ // Hier befindet sich die Idle Animation			
+		
+		if(backloader.backgroundid == 5 && bewegunghorizontal >= 322){
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerudown();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 90;
+			bewegungseitlich = 380;
+		}
+		
+		///// ***** Idle Animationen ******
+		if(backloader.backgroundid == 5){
+		if(millis() > startTime + 200){
+		startTime = millis();
+			if (animationchangerboss1 == 0){ // einfacher Switch für die Idle Animation
+				animationchangerboss1 = 1;
+				animationchanger = 1;
+			}else{
+				animationchangerboss1 = 0;
+				animationchanger = 0;
+			}
+		}
+		}
+		
+		
+		if(keyPressed == false && backloader.backgroundid != 5){ // Hier befindet sich die Idle Animation			
 			if(millis() > startTime + 200){
 			startTime = millis();
 				if (animationchanger == 0){ // einfacher Switch für die Idle Animation
@@ -205,11 +243,14 @@ public class haupt extends PApplet{
     			}
 			}
 		}
+
+		
+		///// ***** Idle Animationen Ende *****
 		//System.out.println(backloader.backgroundid);
 		
 		// ***** Musik Steuerung **** 
 		
-		if(backloader.backgroundid == 1 || backloader.backgroundid == 4){
+		if(backloader.backgroundid == 5 ){
 			song.mute();
 			bossMusik.unmute();
 		}else{
@@ -226,6 +267,9 @@ public class haupt extends PApplet{
 		
 		//
 		cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
+		if(backloader.backgroundid == 5){
+			cutsceneboss1();
+		}
 		
 		
 	}
@@ -234,86 +278,82 @@ public void controlEvent(ControlEvent theEvent){
 	System.out.println(theEvent.getController().getName()); // Event Controller für die Button Abfrage
 }
 
-public void Antwort(int theValue){ // Button Name Antwort wird hier Aufgerufen und kann manipuliert werden
+public void Fallout(int theValue){ // Button Name Antwort wird hier Aufgerufen und kann manipuliert werden
 	System.out.println("test");
 	textAusgabe ="Button Pressed";
-	gbuttons.buttonForAll.hide();
+	animationMovmentStop = false;
+	//gbuttons.buttonForAll.hide();
+	
 }
-public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
+public void WildLands(int theVaule){ // Button mit dem namen test wird Aufgerufen und kann hier manipuliert werden
 	textAusgabe = "Button Test pressed";
+	animationMovmentStop = false;
 }
 	
 	public void keyPressed(){ // Alle funktionen fÃ¼r Key presses
 		//test platzhalter = new test(this);
-		if((key == 'd' || key == 'D')){ // Bei tastentdruck d Passiert:
+		if((key == 'd' || key == 'D' || keyCode == RIGHT)){ // Bei tastentdruck d Passiert:
 			//System.out.println("w");
 			 pixelcollisionright(bewegungseitlich,bewegunghorizontal);
-				if(laufstop == false){
+			 if(animationMovmentStop == false){	
+			 if(laufstop == false){
 			rightmov = charmov.animationright(rightmov);
 			animationchanger = rightmov;// Ruft funktion aus imageLoader aus fÃ¼r animation
 				bewegungseitlich = charmov.charbewegungrechts(bewegungseitlich); // der char bewegt sich in folgende richtung	
-				}
+			 		}	
+			 	}
 			}
 				
-		if((key == 'a' || key == 'A')){ // Bei Tastendruck a Passiert :
+		if((key == 'a' || key == 'A' || keyCode == LEFT)){ // Bei Tastendruck a Passiert :
 			
-			if (bewegungseitlich < 0){ // Wenn der Charackter bei der x Achse kleiner als 0 ist:
-				movmenthaltlinks = false;	// Darf char sich nicht in die richtung bewegen:
-			}else{
-				movmenthaltlinks = true; // Darf char sich in die richtung bewegen
-			}
+
 
 			if(backloader.backgroundid == 0){// Wenn der Backgroundid 0 ist also erstes bild:
 				
-				if(movmenthaltlinks == true){
+
 					pixelcollisionleft(bewegungseitlich,bewegunghorizontal);// und der bool wert true ist
+					if(animationMovmentStop == false){
 					if(laufstop == false){
 					leftmov = charmov.animationleft(leftmov);
 					animationchanger = leftmov;
 					bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich); // Charackter bewegung in die richtung
+						}
 					}
-				}else{
-					
-				}
 				
 			}else{
 				pixelcollisionleft(bewegungseitlich,bewegunghorizontal);// Bei anderen backgrounds darf char sich bewegen
+				if(animationMovmentStop == false){
 				if(laufstop == false){
 				leftmov = charmov.animationleft(leftmov);
 				animationchanger = leftmov;
 				bewegungseitlich = charmov.charbewegunglinks(bewegungseitlich);	
+					}
 				}
-			}
-				
+			}		
 		}
 		if((key == ENTER || key == RETURN)){ // Bei Tastendruck Enter / Return :
 			//textAusgabe = "Enter Wurde gedrückt";
 			
-			if(erstecutscene == true){
-				if(animationMovment == false){
+			if(animationMovmentStop == true){
 					entercutscene = entercutscene +1;	
-				}
 			}
 		}
-		if((key == 'w' || key == 'W')){ // Bei tastendruck w Passiert:
+		if((key == 'w' || key == 'W' || keyCode == UP)){ // Bei tastendruck w Passiert:
 			//textAusgabe = "das ist die taste w";
 			pixelcollisionup(bewegungseitlich,bewegunghorizontal);
+			if(animationMovmentStop == false){
 			if(laufstop == false){
 			upmov = charmov.animationup(upmov);
 			animationchanger = upmov;
 			bewegunghorizontal = charmov.charbewegunghoch(bewegunghorizontal);// Char bewegt sich in die richtung
+				}
 			}
 		}
-		if((key == 's' || key == 'S')){ // Bei tastendtuck s Passiert:
+		if((key == 's' || key == 'S' || keyCode == DOWN)){ // Bei tastendtuck s Passiert:
 			//textAusgabe = "das ist die taste s";
-			if(bewegunghorizontal >= 530){
-				
-				movmenthaltrunter = false;
-			}else{
-				movmenthaltrunter = true;
-			}
-			if(movmenthaltrunter == true){
+
 				pixelcollisiondown(bewegungseitlich,bewegunghorizontal);
+				if(animationMovmentStop == false){
 				if(laufstop == false){
 				downmov = charmov.animationdown(downmov);
 				animationchanger = downmov;
@@ -322,11 +362,31 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 			}
 		}
 	}
-
+	
+	public void cutsceneboss1(){
+		if(cutsceneboss1 == false){
+			animationMovmentStop = true;
+			if(entercutscene == 0){
+				textAusgabe = "Luca; Was suchst du hier im DreamRealm?";
+				luca1.play();
+			}
+			if(entercutscene == 1){
+				textAusgabe = "Held: Das würde ich selber gerne wissen";
+			}
+			if(entercutscene == 2){
+				textAusgabe = "Luca: Da du nun hier bist, Löse meine Aufgabe";
+				luca2.play();
+				
+				cutsceneboss1= true;
+				gbuttons.buttonForAll.show(); // Buttons anzeigen test
+			}
+		}
+		
+	}
 	
 	public void cutscene(){ // Erste Cutscene
 		if(erstecutscene == true){
-			laufstop = true;
+			animationMovmentStop = true;
 			if(entercutscene == 0){
 			textAusgabe = "Held: Oh man ... es ist schon recht Spät.";
 			}
@@ -349,7 +409,7 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 					schrittZaehler=0;
 					textAusgabe = "Held: Dann mal los.";
 					erstecutscene = false;
-					laufstop = false;
+					animationMovmentStop = false;
 					entercutscene = 0;
 					}
 		}
@@ -365,19 +425,17 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		int pixelcordiante=0;
 		pixelcordiante = 26+x+(y+46)*800;
 		
-		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
 		//System.out.println(pixelcordiante);
 		
 		
 		for(int i=1;i <= 4; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
-			println("Schwarz");
 			laufstop=true;
 			i++;
 			pixelcordiante++;
 		}
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
-			println("Weiß");
 			laufstop=false;
 			i++;
 			pixelcordiante++;
@@ -392,19 +450,17 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		int pixelcordiante=0;
 		pixelcordiante = x+(y+46)*800;
 		
-		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
+		//println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
 		//System.out.println(pixelcordiante);
 		
 		
 		for(int i=1;i <= 4; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
-			println("Schwarz");
 			laufstop=true;
 			i++;
 			pixelcordiante--;
 		}
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
-			println("Weiß");
 			laufstop=false;
 			i++;
 			pixelcordiante--;
@@ -418,20 +474,16 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		backgroundcollision[backloader.backgroundid].loadPixels();
 		int pixelcordiante=0;
 		pixelcordiante = x+(y+43)*800;
-		
-		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
 		//System.out.println(pixelcordiante);
 		
 		
 		for(int i=1;i <= 2; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
-			println("Schwarz");
 			laufstop=true;
 			i++;
 			pixelcordiante = pixelcordiante -800;
 		}
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
-			println("Weiß");
 			laufstop=false;
 			i++;
 			pixelcordiante = pixelcordiante -800;
@@ -445,20 +497,16 @@ public void test(int theVaule){ // Button mit dem namen test wird Aufgerufen und
 		backgroundcollision[backloader.backgroundid].loadPixels();
 		int pixelcordiante=0;
 		pixelcordiante = x+(y+64)*800;
-		
-		println(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]));
 		//System.out.println(pixelcordiante);
 		
 		
 		for(int i=1;i <= 2; i++){
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) == 0.0){
-			println("Schwarz");
 			laufstop=true;
 			i++;
 			pixelcordiante = pixelcordiante +800;
 		}
 		if(red(backgroundcollision[backloader.backgroundid].pixels[pixelcordiante]) >= 200.0){
-			println("Weiß");
 			laufstop=false;
 			i++;
 			pixelcordiante = pixelcordiante +800;

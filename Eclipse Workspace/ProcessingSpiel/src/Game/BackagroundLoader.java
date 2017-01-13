@@ -42,6 +42,13 @@ public class BackagroundLoader extends PApplet{
 			backgroundid = 5;
 		}
 	}
+	
+	public void backgroundchangerudown(){
+		if(backgroundid == 5){
+			backgroundid = 1;
+		}
+	}
+	
 	// Background Changer nach rechts
 	public void backgroundchangerright(){
 		if(backgroundid == 3){

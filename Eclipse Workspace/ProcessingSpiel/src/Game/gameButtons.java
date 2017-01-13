@@ -8,18 +8,31 @@ public class gameButtons {
 	
 	public void buttonsetup(PApplet haupt){
 		buttonForAll = new ControlP5(haupt);
-	buttonForAll.addButton("test")
+	buttonForAll.addButton("Fallout")
+	.setValue(0)
+	.setPosition(50,700)
+	.setSize(100,50);
+	buttonForAll.hide();
+	
+	buttonForAll.addButton("WildLands")
 	.setValue(0)
 	.setPosition(200,700)
 	.setSize(100,50);
 	buttonForAll.hide();
 	
-	buttonForAll.addButton("Antwort")
+	buttonForAll.addButton("Lösung 3")
 	.setValue(0)
-	.setPosition(50,700)
+	.setPosition(350,700)
+	.setSize(100,50);
+	buttonForAll.hide();
+	
+	buttonForAll.addButton("Lösung 4")
+	.setValue(0)
+	.setPosition(500,700)
 	.setSize(100,50);
 	buttonForAll.hide();
 	}
+	
 	
 	
 	
