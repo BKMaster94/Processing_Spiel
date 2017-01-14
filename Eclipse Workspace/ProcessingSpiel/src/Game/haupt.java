@@ -71,6 +71,7 @@ public class haupt extends PApplet{
 	boolean animationMovment = false;
 	boolean animationMovmentStop = false;
 	boolean cutsceneboss1 = false;
+	boolean switch3 = false;
 ///////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -140,8 +141,6 @@ public class haupt extends PApplet{
 	}
 	public void draw(){
 		//println(bossKillCount);
-		
-
 		if(switch2==true){ // FadeIn für die Cutscene !
 			firstCutsceneFadeOut = firstCutsceneFadeOut -13;
 			tint(255,firstCutsceneFadeOut);	
@@ -150,14 +149,17 @@ public class haupt extends PApplet{
 			}
 		}
 		
-		if(erstecutscene == true){
-			backloader.backgroundid = 6;
-		}else{
-			backloader.backgroundid = 0;
+		if(switch3 == false){
+			if(erstecutscene == true){
+				backloader.backgroundid = 6;
+			}else{
+				backloader.backgroundid = 0;
+				switch3 = true;
+			}
 		}
 		
 		if(switch1==true){ // FadeIn Effekt Berechnung für den Levelwechsel
-			fadeIn = fadeIn +10; // Wert wird mit +10 Addiert!
+			fadeIn = fadeIn +15; // Wert wird mit +10 Addiert!
 			tint(255,fadeIn);
 			if(fadeIn>255){ // Wenn der FadeIn über 255 ist wird der Switch betätigt und die Variable wieder auf 0 gesetzt
 				switch1=false;
@@ -410,8 +412,6 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 	}
 	
 	public void cutscene(){ // Erste Cutscene
-		println(entercutscene);
-		println(schrittZaehler);
 		if(erstecutscene == true){
 			animationMovmentStop = true;
 			if(entercutscene == 0){
