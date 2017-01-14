@@ -38,11 +38,29 @@ public class BackagroundLoader extends PApplet{
 		if(backgroundid == 1){
 			backgroundid = 5;
 		}
+		if(backgroundid == 2){
+			backgroundid = 7;
+		}
+		if(backgroundid == 3){
+			backgroundid = 8;
+		}
+		if(backgroundid == 4){
+			backgroundid = 9;
+		}
 	}
 	
 	public void backgroundchangerudown(){
 		if(backgroundid == 5){
 			backgroundid = 1;
+		}
+		if(backgroundid == 7){
+			backgroundid = 2;
+		}
+		if(backgroundid == 8){
+			backgroundid = 3;
+		}
+		if(backgroundid == 9){
+			backgroundid= 4;
 		}
 	}
 	

@@ -71,7 +71,12 @@ public class haupt extends PApplet{
 	boolean animationMovment = false;
 	boolean animationMovmentStop = false;
 	boolean cutsceneboss1 = false;
+	boolean cutsceneboss2 = false;
+	boolean cutsceneboss3 = false;
+	boolean cutsceneboss4 = false;
 	boolean switch3 = false;
+	boolean switch4 = true;
+	boolean switch5=true;
 ///////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -140,7 +145,15 @@ public class haupt extends PApplet{
 		bossMusik.mute(); 
 	}
 	public void draw(){
+		//println(bewegunghorizontal);
+		//println(bewegungseitlich);
 		//println(bossKillCount);
+		
+		
+		if(bossKillCount == 4){
+			textAusgabe = "DU HAST DAS SPIEL BENDET ! VIELEN DANK FÜRS SPIELEN";
+		}
+
 		if(switch2==true){ // FadeIn für die Cutscene !
 			firstCutsceneFadeOut = firstCutsceneFadeOut -13;
 			tint(255,firstCutsceneFadeOut);	
@@ -174,11 +187,14 @@ public class haupt extends PApplet{
 		 cutscene(); // Die Anfangs Cutscene wird geladen von der Funktion Cutscene()
 		 
 		 
-		 if(backloader.backgroundid == 5){ // Boss nur laden wenn bossarena betreten wird ! 
+		 if(backloader.backgroundid == 5 || backloader.backgroundid == 7 || backloader.backgroundid == 8){ // Boss nur laden wenn bossarena betreten wird ! 
 			 image(bossimg[animationchangerboss1],0,0);
 		 }
 		 image(backgroundimg[backloader.backgroundid],0,0); // Hintergrund der geladen wird		
 		 tbox.Textbox(textAusgabe,this);
+		 if(backloader.backgroundid == 9){
+			 image(bossimg[animationchangerboss1],0,0);
+		 }
 		 image(pimg[animationchanger] ,bewegungseitlich, bewegunghorizontal);// Dieses PImage ist der Hauptcharakter
 
 		if(bewegungseitlich >= 700 && backloader.backgroundid != 4){ // Wenn char auf der x Achse 570 erreicht:
@@ -207,6 +223,7 @@ public class haupt extends PApplet{
 			textAusgabe ="";
 		}
 		if(backloader.backgroundid == 1 && bewegunghorizontal <= 70){ // Levelcahnge nach oben!
+			animationchangerboss1 =0;
 			tint(255,0);	
 			switch1 = true;
 			levelChangeSound.play();
@@ -215,8 +232,41 @@ public class haupt extends PApplet{
 			bewegunghorizontal = 270;
 			textAusgabe ="";
 		}
+		if(backloader.backgroundid == 2 && bewegunghorizontal <= 200){ // Levelcahnge nach oben!
+			animationchangerboss1 = 2;
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerup();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 300;
+			textAusgabe ="";
+		}
+		if(backloader.backgroundid == 3 && bewegunghorizontal <= 165){ // Levelcahnge nach oben!
+			animationchangerboss1 = 5;
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerup();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 370;
+			bewegungseitlich = 380;
+			textAusgabe ="";
+		}		
+			if(backloader.backgroundid == 4 && bewegunghorizontal <= 275){ // Levelcahnge nach oben!
+			animationchangerboss1 = 9;
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerup();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 470;
+			bewegungseitlich = 383;
+			textAusgabe ="";
+		}
 		
-		if(backloader.backgroundid == 5 && bewegunghorizontal >= 322){
+		
+		if(backloader.backgroundid == 5 && bewegunghorizontal >= 318){
 			tint(255,0);	
 			switch1 = true;
 			levelChangeSound.play();
@@ -226,7 +276,129 @@ public class haupt extends PApplet{
 			bewegungseitlich = 380;
 			textAusgabe ="";
 		}
+		if(backloader.backgroundid == 7 && bewegunghorizontal >= 400){
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerudown();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 230;
+			bewegungseitlich = 380;
+			textAusgabe ="";
+		}
+		if(backloader.backgroundid == 8 && bewegunghorizontal >= 450){
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerudown();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 200;
+			bewegungseitlich = 383;
+			textAusgabe ="";
+		}
+		if(backloader.backgroundid == 9 && bewegunghorizontal >= 530){
+			tint(255,0);	
+			switch1 = true;
+			levelChangeSound.play();
+			backloader.backgroundchangerudown();
+			levelChangeSound.rewind();
+			bewegunghorizontal = 300;
+			bewegungseitlich = 383;
+			textAusgabe ="";
+		}
+		
+		
 		///// ***** Idle Animationen ******
+		if(backloader.backgroundid == 9){
+			if(millis() > startTime + 200){
+				startTime = millis();
+				if(animationchangerboss1 == 11){
+					animationchangerboss1 = 12;
+				}
+				if(animationchangerboss1 == 10){
+					animationchangerboss1 = 11;
+				}
+				if(animationchangerboss1 == 9){
+					animationchangerboss1 = 10;
+				}
+				if(switch5==false){
+				if(animationchangerboss1 == 12){
+					animationchangerboss1 = 9;
+					switch5=true;
+				}}
+				
+				if(animationchangerboss1 == 12){
+					switch5=false;
+				}
+				
+				if (animationchanger == 0){ // einfacher Switch für die Idle Animation
+						animationchanger = 1;
+					}else{
+						animationchanger = 0;
+					}
+				}
+		}
+		
+		
+		
+		if(backloader.backgroundid == 8){
+			if(millis() > startTime + 200){
+				startTime = millis();
+				if(animationchangerboss1 == 7){
+					animationchangerboss1 = 8;
+				}
+				if(animationchangerboss1 == 6){
+					animationchangerboss1 = 7;
+				}
+				if(animationchangerboss1 == 5){
+					animationchangerboss1 = 6;
+				}
+				if(switch5==false){
+				if(animationchangerboss1 == 8){
+					animationchangerboss1 = 5;
+					switch5=true;
+				}}
+				
+				if(animationchangerboss1 == 8){
+					switch5=false;
+				}
+				
+				if (animationchanger == 0){ // einfacher Switch für die Idle Animation
+						animationchanger = 1;
+					}else{
+						animationchanger = 0;
+					}
+				}
+			
+		}
+		if(backloader.backgroundid == 7){
+			if(millis() > startTime + 200){
+				startTime = millis();
+				if (animationchanger == 0){ 
+    				animationchanger = 1;
+    			}else{
+    				animationchanger = 0;
+    			}
+				if(animationchangerboss1 == 3){
+					animationchangerboss1 = 4;
+				}
+					
+				if(animationchangerboss1 == 2){
+					animationchangerboss1 = 3;
+					
+				}
+				if(switch4 == true){
+				if(animationchangerboss1 == 4){
+						animationchangerboss1 = 2;
+						switch4 = false;
+						}
+					}
+				if(animationchangerboss1 == 4){
+					switch4 = true;
+				}
+				}
+		}
+		
 		if(backloader.backgroundid == 5){
 		if(millis() > startTime + 200){
 		startTime = millis();
@@ -252,7 +424,7 @@ public class haupt extends PApplet{
 		///// ***** Idle Animationen Ende *****
 		
 		// ***** Musik Steuerung **** 
-		if(backloader.backgroundid == 5 ){
+		if(backloader.backgroundid == 5 || backloader.backgroundid == 7 || backloader.backgroundid == 8 || backloader.backgroundid == 9){
 			song.mute();
 			bossMusik.unmute();
 		}else{
@@ -264,7 +436,15 @@ public class haupt extends PApplet{
 		if(backloader.backgroundid == 5){
 			cutsceneboss1();
 		}
-		
+		if(backloader.backgroundid == 7){
+			cutsceneboss2();
+		}
+		if(backloader.backgroundid == 8){
+			cutsceneboss3();
+		}
+		if(backloader.backgroundid == 9){
+			cutsceneboss4();
+		}
 		///// ***** Ende Content *****
 	}
 
@@ -307,6 +487,90 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 			}
 		textAusgabe = "Luca: Denk beim nächsten Versuch besser nach.";
 	}
+
+///// ***** Boss2 *****
+
+public void DOOM(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Bruno: Fast Richtig, versuch es noch einmal!";
+	}
+}
+public void TombRaider(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Bruno: Fast Richtig, versuch es noch einmal!";
+	}
+}
+public void FinalFantasy(int theValue){
+	if(entercutscene > 4){
+		animationMovmentStop = false;
+		textAusgabe = "Bruno: Genau, somit hast du auch die zweite Prüfung bestanden.";
+		bossKillCount++;
+		entercutscene = 0;
+		gbuttons.buttonBoss2.hide();
+	}
+}
+public void ChronoTrigger(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Bruno: Fast Richtig, versuch es noch einmal!";
+	}
+}
+
+
+
+
+///// ***** Boss3 *****
+public void megami(int theValue){
+	if(entercutscene > 4){
+		animationMovmentStop = false;
+		textAusgabe = "Adrian: Gut gemacht Mensch, geh nun weiter";
+		bossKillCount++;
+		entercutscene = 0;
+		gbuttons.buttonBoss3.hide();
+	}
+}
+public void persona(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Adrian: Jack ist noch nicht hier ... noch nicht";
+	}
+}
+public void lostbible(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Adrian: Jack ist noch nicht hier ... noch nicht";
+	}
+}
+public void soulhackers(int theValue){
+	if(entercutscene > 4){
+		textAusgabe = "Adrian: Jack ist noch nicht hier ... noch nicht";
+	}
+}
+
+///// ***** Boss4 ****
+public void jesus(int theValue){
+	if(entercutscene > 6){
+		textAusgabe = "Sören: Du willst mir würdig sein? Denk nochmal scharf nach!";
+	}
+}
+public void cuthulu(int theValue){
+	if(entercutscene > 6){
+		animationMovmentStop = false;
+		textAusgabe = "Sören: Das ist richtig, deine Weisheit hat mich überzeugt";
+		bossKillCount++;
+		entercutscene = 0;
+		gbuttons.buttonBoss4.hide();
+	}
+}
+public void Diablo(int theValue){
+	if(entercutscene > 6){
+		textAusgabe = "Sören: Du willst mir würdig sein? Denk nochmal scharf nach!";
+	}
+}
+public void anubis(int theValue){
+	if(entercutscene > 6){
+		textAusgabe = "Sören: Du willst mir würdig sein? Denk nochmal scharf nach!";
+	}
+}
+
+///// ***** Boss Buttons Ende *****
 	
 	public void keyPressed(){ // Alle funktionen fÃ¼r Key presses
 		if((key == 'd' || key == 'D' || keyCode == RIGHT)){ // Bei tastentdruck d Passiert:
@@ -372,11 +636,96 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		}
 	}
 	///// ****** Cutscenes ! *****
+	public void cutsceneboss4(){
+		if(cutsceneboss4 == false){
+			animationMovmentStop = true;
+			if(entercutscene == 0){
+				textAusgabe = "Sören: Wer bist du denn, Menschling ?";
+			}
+			if(entercutscene == 1){
+				textAusgabe = "Held: Lass mich raten dies ist nun die Letzte Prüfung";
+			}
+			if(entercutscene == 2){
+				textAusgabe = "Sören: Wagst du es Wirklich, dich mir so gegenüber zu äußern?";
+			}
+			if(entercutscene == 3){
+				textAusgabe = "Held: Ich muss ja wohl oder übel alle Prüfungen bestehen oder ?";
+			}
+			if(entercutscene == 4){
+				textAusgabe = "Sören: Aber ja du hast recht, dies ist die letzte deiner Aufgaben";
+			}
+			if(entercutscene == 5){
+				textAusgabe = "Held: Ich habe mich schon darauf vorbereitet!";
+			}
+			if(entercutscene == 6){
+				textAusgabe = "Beantworte mir folgende frage und beweise mir das du würdig bist.";
+			}
+			if(entercutscene == 7){
+				textAusgabe = "Was ist nicht tot was ewig liegt und wartet darauf das die Zeit den Tod besiegt?";
+				cutsceneboss4= true;
+				gbuttons.buttonBoss4.show();
+			}
+		}
+		
+	}
+	
+	public void cutsceneboss3(){
+		if(cutsceneboss3 == false){
+			animationMovmentStop = true;
+			if(entercutscene == 0){
+				textAusgabe = "Adrian: Du Wagst es in das Himmelsreich einzudrigen?";
+			}
+			if(entercutscene == 1){
+				textAusgabe = "Held: Ja hier sollte ja die dritte Prüfung sein oder?";
+			}
+			if(entercutscene == 2){
+				textAusgabe = "Adrian: Das stimmt zwar aber dennoch, es wird nicht Leichter werden";
+			}
+			if(entercutscene == 3){
+				textAusgabe = "Held: Das ist mir ja nichts neues ...";
+			}
+			if(entercutscene == 4){
+				textAusgabe = "Adrian: Nun denn, hier kommt mein Rätsel";
+			}
+			if(entercutscene == 5){
+				textAusgabe = "Adrian: Aus welcher Spieleserie Stammt mein guter Freund: Jack Frost";
+				cutsceneboss3= true;
+				gbuttons.buttonBoss3.show();
+			}
+		}
+	}
+	
+	public void cutsceneboss2(){
+		if(cutsceneboss2 == false){
+			animationMovmentStop = true;
+			if(entercutscene == 0){
+				textAusgabe = "Bruno: Wilkommen Held, im Reich des Feuers";
+			}
+			if(entercutscene == 1){
+				textAusgabe = "Held: Lass mich raten du hast auch eine Prüfung die ich lösen muss";
+			}
+			if(entercutscene == 2){
+				textAusgabe = "Bruno: Das ist Richtig";
+			}
+			if(entercutscene == 3){
+				textAusgabe = "Held: Dann mal los ich bin Bereit!";
+			}
+			if(entercutscene == 4){
+				textAusgabe = "Bruno: Gut wie du willst";
+			}
+			if(entercutscene == 5){
+				textAusgabe = "Bruno: Seit mehr als 30 Jahren gibt es mich, doch werde ich immer erneuert, wer bin ich";
+				cutsceneboss2= true;
+				gbuttons.buttonBoss2.show(); // Buttons anzeigen test
+			}
+		}
+	}
+	
 	public void cutsceneboss1(){
 		if(cutsceneboss1 == false){
 			animationMovmentStop = true;
 			if(entercutscene == 0){
-				textAusgabe = "Luca; Was suchst du hier im DreamRealm?";
+				textAusgabe = "Luca: Was suchst du hier im DreamRealm?";
 				luca1.play();
 			}
 			if(entercutscene == 1){
