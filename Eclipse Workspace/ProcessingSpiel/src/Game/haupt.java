@@ -411,6 +411,7 @@ public void DarkSouls(int theVaule){ // Button mit dem namen test wird Aufgerufe
 		
 	}
 	
+	
 	public void cutscene(){ // Erste Cutscene
 		if(erstecutscene == true){
 			animationMovmentStop = true;
